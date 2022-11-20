@@ -8,5 +8,23 @@
     "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
     "strict": true /* Enable all strict type-checking options. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/@types"
+    ],
+    "removeComments": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@controllers/*": [
+        "./src/controllers/*"
+      ],
+      "@models/*": [
+        "./src/models/*"
+      ],
+      "@config/*": [
+        "./src/config/*"
+      ]
+    }
   }
 }
