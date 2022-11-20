@@ -1,1 +1,3 @@
-console.log('hello, world');
+const a = 'dsdas';
+
+console.log(a);
