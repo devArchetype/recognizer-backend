@@ -2,10 +2,10 @@
   "name": "recognizer-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node dist/index.js",
-    "dev": "nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register src/index.ts' -e ts",
+    "start": "node dist/server.js",
+    "dev": "nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register src/server.ts' -e ts",
     "build": "tsc && tsc-alias"
   },
   "repository": {
