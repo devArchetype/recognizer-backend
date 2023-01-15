@@ -12,7 +12,7 @@ export default class User implements UserDTO {
   ) {}
 
   public static async findOne(user: UserDTO): Promise<Users | null> {
-    return prisma.users.findUnique({
+    return prisma.users.findFirst({
       where: {
         ...user,
       },
@@ -22,24 +22,28 @@ export default class User implements UserDTO {
   public async save(): Promise<boolean> {
     if (!this.validate()) return false;
 
-    if (!this.id) {
-      const userBD = await prisma.users.create({
-        data: {
-          ...this,
-        },
-      });
+    try {
+      if (!this.id) {
+        const userBD = await prisma.users.create({
+          data: {
+            ...this,
+          },
+        });
 
-      this.id = userBD.id;
+        this.id = userBD.id;
+      } else {
+        await prisma.users.update({
+          where: {
+            ...this,
+          },
+          data: {
+            ...this,
+          },
+        });
+      }
+    } catch (err) {
+      return false;
     }
-
-    await prisma.users.update({
-      where: {
-        ...this,
-      },
-      data: {
-        ...this,
-      },
-    });
 
     return true;
   }

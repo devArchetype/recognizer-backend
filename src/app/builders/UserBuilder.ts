@@ -18,6 +18,22 @@ export default class UserBuilder implements Builder {
     this._name = name;
   }
 
+  public get email(): string {
+    return this._email;
+  }
+
+  public set email(email: string) {
+    this._email = email;
+  }
+
+  public get password(): string {
+    return this._password;
+  }
+
+  public set password(password: string) {
+    this._password = password;
+  }
+
   public reset(): void {
     this._name = '';
     this._email = '';
@@ -27,6 +43,7 @@ export default class UserBuilder implements Builder {
   }
 
   public build(): User {
+    if (this._id) return new User(this._name, this._email, this._password, this._avatar, this._id);
     return new User(this._name, this._email, this._password, this._avatar);
   }
 }

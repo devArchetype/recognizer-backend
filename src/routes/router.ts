@@ -1,13 +1,12 @@
 import * as express from 'express';
-import { Request, Response } from 'express';
-
-// import User from '../app/models/User';
+import UserController from 'src/app/controllers/UserController';
 
 const router = express.Router();
 
-// test route
-router.get('/', async (req: Request, res: Response) => {
-  res.send('Hello, World');
-});
+// * controllers
+const userController = new UserController();
+
+// * user routes
+router.get('/users/store', userController.store.bind(userController));
 
 export default router;
