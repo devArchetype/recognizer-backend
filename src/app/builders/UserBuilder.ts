@@ -1,5 +1,5 @@
-import Builder from '../interfaces/builder';
-import User from '../models/User';
+import User from '@entities/User';
+import Builder from '@interfaces/builder';
 
 export default class UserBuilder implements Builder {
   constructor(

@@ -17,14 +17,29 @@
     "baseUrl": ".",
     "paths": {
       "@builders/*": [
-        "./src/builders/*"
+        "./src/app/builders/*"
       ],
-      "@models/*": [
-        "./src/classes/*"
+      "@entities/*": [
+        "./src/app/entities/*"
+      ],
+      "@controllers/*": [
+        "./src/app/controllers/*"
+      ],
+      "@helpers/*": [
+        "./src/app/helpers/*"
+      ],
+      "@interfaces/*": [
+        "./src/app/interfaces/*"
       ],
       "@config/*": [
         "./src/config/*"
-      ]
+      ],
+      "@middlewares/*": [
+        "./src/middlewares/*"
+      ],
+      "@routes/*": [
+        "./src/routes/*"
+      ],
     }
   }
 }

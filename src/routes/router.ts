@@ -1,12 +1,10 @@
 import * as express from 'express';
-import UserController from 'src/app/controllers/UserController';
+import UserController from '@controllers/UserController';
 
 const router = express.Router();
 
-// * controllers
-const userController = new UserController();
-
 // * user routes
+const userController = new UserController();
 router.get('/users/store', userController.store.bind(userController));
 
 export default router;

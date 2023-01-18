@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import UserBuilder from '../builders/UserBuilder';
-import ControllerProtocol from '../interfaces/controller.protocol';
+import UserBuilder from '@builders/UserBuilder';
+import ControllerProtocol from '@interfaces/controller.protocol';
 
 export default class UserController implements ControllerProtocol {
   private userBuilder = new UserBuilder();
