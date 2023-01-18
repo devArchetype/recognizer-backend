@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import * as express from 'express';
 import * as cors from 'cors';
 import corsOptions from '@config/cors.options';
@@ -10,5 +11,5 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(router);
 
-const PORT = 3000;
+const PORT = process.env.SERVER_PORT;
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
