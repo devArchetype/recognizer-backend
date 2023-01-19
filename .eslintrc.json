@@ -23,6 +23,8 @@
     "@typescript-eslint"
   ],
   "rules": {
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/naming-convention": "off"
   }
 }
