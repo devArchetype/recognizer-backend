@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 import UserBuilder from '@builders/UserBuilder';
 import ControllerProtocol from '@interfaces/controller.protocol';
+import User from '@entities/User';
+
+import * as bcrypt from 'bcrypt';
 
 export default class UserController implements ControllerProtocol {
   private userBuilder = new UserBuilder();
@@ -10,19 +13,30 @@ export default class UserController implements ControllerProtocol {
   }
 
   public async store(req: Request, res: Response): Promise<void> {
-    this.userBuilder.name = 'riquelmeD';
-    this.userBuilder.email = 'riquelme1322dewdwe3@gmail.com';
-    this.userBuilder.password = '1234';
+    const { name, email, password } = req.body;
+    const userExists = await User.findOne({ email });
 
-    const user = this.userBuilder.build();
-    let response = '';
-    if (await user.save()) {
-      response = JSON.stringify(user);
-    } else {
-      response = JSON.stringify({ erros: ['Conta já cadastrada!'] });
+    if (userExists) {
+      res.json({
+        error: 'Usuário Já Existe!',
+      });
+
+      return;
     }
 
-    res.send(response);
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    this.userBuilder.reset();
+    this.userBuilder.name = name;
+    this.userBuilder.email = email;
+    this.userBuilder.password = hashedPassword;
+
+    const newUser = this.userBuilder.build();
+    await newUser.save();
+
+    const { password: _, ...user } = newUser;
+
+    res.status(201).json(user);
   }
 
   public update(req: Request, res: Response): void {

@@ -34,6 +34,14 @@ export default class UserBuilder implements Builder {
     this._password = password;
   }
 
+  public get avatar(): string {
+    return this._avatar ?? '';
+  }
+
+  public set avatar(avatar: string) {
+    this._avatar = avatar;
+  }
+
   public reset(): void {
     this._name = '';
     this._email = '';
