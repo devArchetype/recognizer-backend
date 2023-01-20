@@ -17,7 +17,7 @@ Este repositório contém todo o código que compõe o back-end do projeto, os d
 
 <h2 id="technologies">🛠&nbsp; Tecnologias</h2>
 
-Este projeto foi desenvolvido com as seguintes tecnologias:
+Este projeto foi desenvolvido usando as seguintes tecnologias:
 
 ✔️ [NodeJs](https://nodejs.org/en/)
 
@@ -25,9 +25,11 @@ Este projeto foi desenvolvido com as seguintes tecnologias:
 
 ✔️ [ExpressJS](https://expressjs.com/)
 
+✔️ [Prisma](https://www.prisma.io/)
+
 ✔️ [MySQL](https://www.mysql.com/)
 
-✔️ [Prisma](https://www.prisma.io/)
+✔️ [Docker](https://www.docker.com/)
 
 ---
 
@@ -42,6 +44,12 @@ cd recognizer-backend
 
 # Instale as dependẽncias do projeto
 npm i
+
+# Suba os containers referentes
+docker compose up -d
+
+# Aplique as Migrações do BD
+npx prisma migrate deploy
 
 # Faça o build do projeto
 npm run build
