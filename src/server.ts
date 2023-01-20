@@ -1,6 +1,8 @@
 import 'dotenv/config';
+import 'express-async-errors';
 import * as express from 'express';
 import * as cors from 'cors';
+
 import corsOptions from '@config/cors.options';
 import router from '@routes/router';
 
