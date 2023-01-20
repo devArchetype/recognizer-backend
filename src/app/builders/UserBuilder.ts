@@ -50,8 +50,15 @@ export default class UserBuilder implements Builder {
     this._id = '';
   }
 
-  public build(): User {
+  public build(): User | null {
+    if (!this.validate()) return null;
+
     if (this._id) return new User(this._name, this._email, this._password, this._avatar, this._id);
     return new User(this._name, this._email, this._password, this._avatar);
+  }
+
+  private validate(): boolean {
+    if (this._name && this._email && this._password) return true;
+    return false;
   }
 }

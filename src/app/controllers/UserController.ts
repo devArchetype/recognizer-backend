@@ -8,10 +8,6 @@ import * as bcrypt from 'bcrypt';
 export default class UserController implements ControllerProtocol {
   private userBuilder = new UserBuilder();
 
-  public index(req: Request, res: Response): void {
-
-  }
-
   public async store(req: Request, res: Response): Promise<void> {
     const { name, email, password } = req.body;
     const userExists = await User.findOne({ email });
@@ -32,11 +28,17 @@ export default class UserController implements ControllerProtocol {
     this.userBuilder.password = hashedPassword;
 
     const newUser = this.userBuilder.build();
-    await newUser.save();
+    const saveUser = await newUser?.save() ?? false;
 
-    const { password: _, ...user } = newUser;
-
-    res.status(201).json(user);
+    if (saveUser) {
+      res.status(201).json({
+        sucess: 'Usuário cadastrado com sucesso!',
+      });
+    } else {
+      res.json({
+        error: 'Oops, Algum erro aconteceu, tente novamente mais tarde!',
+      });
+    }
   }
 
   public update(req: Request, res: Response): void {

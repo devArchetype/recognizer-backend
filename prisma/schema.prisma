@@ -22,11 +22,11 @@ model Users {
 }
 
 model Groups {
-  id   String @id @default(uuid())
-  name String
+  id     String @id @default(uuid())
+  name   String
+  userId String
 
   user    Users     @relation(fields: [userId], references: [id])
-  userId  String
   Exams   Exams[]
   Members Members[]
 }
@@ -37,9 +37,9 @@ model Exams {
   description String?
   examDate    DateTime?
   template    String
+  groupId     String
 
   group   Groups    @relation(fields: [groupId], references: [id])
-  groupId String
   Members Members[]
   Answers Answers[]
 }
@@ -48,11 +48,11 @@ model Answers {
   id              String @id @default(uuid())
   template        String
   templatePicture String
+  membersId       String
+  examsId         String
 
-  Members   Members @relation(fields: [membersId], references: [id])
-  membersId String
-  Exams     Exams   @relation(fields: [examsId], references: [id])
-  examsId   String
+  Members Members @relation(fields: [membersId], references: [id])
+  Exams   Exams   @relation(fields: [examsId], references: [id])
 }
 
 model Members {

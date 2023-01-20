@@ -11,14 +11,6 @@ export default class User implements UserDTO {
     public id?: string,
   ) {}
 
-  public static async findOne(user: UserDTO): Promise<Users | null> {
-    return prisma.users.findFirst({
-      where: {
-        ...user,
-      },
-    });
-  }
-
   public async save(): Promise<boolean> {
     if (!this.validate()) return false;
 
@@ -51,5 +43,13 @@ export default class User implements UserDTO {
   private validate(): boolean {
     if (this.name && this.email && this.password) return true;
     return false;
+  }
+
+  public static async findOne(user: UserDTO): Promise<Users | null> {
+    return prisma.users.findFirst({
+      where: {
+        ...user,
+      },
+    });
   }
 }
