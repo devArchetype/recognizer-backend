@@ -11,16 +11,16 @@ export default class UserController implements ControllerProtocol {
 
   public async store(req: Request, res: Response): Promise<void> {
     const { name, email, password } = req.body;
-    const userExists = await User.findOne({ email });
 
+    this.userBuilder.reset();
+    this.userBuilder.name = name ?? '';
+    this.userBuilder.email = email ?? '';
+    this.userBuilder.password = password ? await bcrypt.hash(password, 10) : '';
+
+    const userExists = await User.findOne({ email });
     if (userExists) {
       throw new BadRequestError('Usuário Já Existe');
     }
-
-    this.userBuilder.reset();
-    this.userBuilder.name = name;
-    this.userBuilder.email = email;
-    this.userBuilder.password = await bcrypt.hash(password, 10);
 
     const newUser = this.userBuilder.build();
     const saveUser = await newUser?.save() ?? false;
@@ -40,5 +40,9 @@ export default class UserController implements ControllerProtocol {
 
   public delete(req: Request, res: Response): void {
 
+  }
+
+  public login(req: Request, res: Response): void {
+    const { email, password } = req.body;
   }
 }

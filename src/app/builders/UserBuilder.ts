@@ -18,6 +18,10 @@ export default class UserBuilder implements Builder {
   }
 
   public set name(name: string) {
+    if (validator.isEmpty(name)) {
+      throw new BadRequestError('Nome inválida');
+    }
+
     this._name = name;
   }
 
@@ -38,6 +42,10 @@ export default class UserBuilder implements Builder {
   }
 
   public set password(password: string) {
+    if (validator.isEmpty(password)) {
+      throw new BadRequestError('Senha inválida');
+    }
+
     this._password = password;
   }
 
@@ -60,7 +68,9 @@ export default class UserBuilder implements Builder {
   public build(): User | null {
     if (!this.validate()) return null;
 
-    if (this._id) return new User(this._name, this._email, this._password, this._avatar, this._id);
+    if (this._id) {
+      return new User(this._name, this._email, this._password, this._avatar, this._id);
+    }
     return new User(this._name, this._email, this._password, this._avatar);
   }
 
