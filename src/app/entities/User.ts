@@ -1,6 +1,6 @@
 import { Users } from '@prisma/client';
 import prisma from '@config/prisma.client';
-import { UserDTO } from 'src/@types/types.dto';
+import { UserDTO } from 'src/@types/dto';
 
 export default class User implements UserDTO {
   constructor(

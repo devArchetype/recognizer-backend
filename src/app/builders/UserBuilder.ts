@@ -1,6 +1,6 @@
 import User from '@entities/User';
 import { BadRequestError } from '@erros/api-erros';
-import Builder from '@interfaces/builder';
+import Builder from '@interfaces/builder.protocol';
 
 import validator from 'validator';
 

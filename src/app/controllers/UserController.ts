@@ -65,8 +65,4 @@ export default class UserController implements ControllerProtocol {
       token,
     });
   }
-
-  async getProfile(req: Request, res: Response) {
-    // res.json(req.user);
-  }
 }
