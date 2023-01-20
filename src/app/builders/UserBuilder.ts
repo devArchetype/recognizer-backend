@@ -1,5 +1,8 @@
 import User from '@entities/User';
+import { BadRequestError } from '@erros/api-erros';
 import Builder from '@interfaces/builder';
+
+import validator from 'validator';
 
 export default class UserBuilder implements Builder {
   constructor(
@@ -23,6 +26,10 @@ export default class UserBuilder implements Builder {
   }
 
   public set email(email: string) {
+    if (!validator.isEmail(email)) {
+      throw new BadRequestError('Email inválido');
+    }
+
     this._email = email;
   }
 
