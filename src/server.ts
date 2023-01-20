@@ -5,6 +5,7 @@ import * as cors from 'cors';
 
 import corsOptions from '@config/cors.options';
 import router from '@routes/router';
+import { errorMiddleware } from '@middlewares/errorMiddleware';
 
 const app = express();
 
@@ -12,6 +13,7 @@ const app = express();
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(router);
+app.use(errorMiddleware);
 
 const PORT = process.env.SERVER_PORT;
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
