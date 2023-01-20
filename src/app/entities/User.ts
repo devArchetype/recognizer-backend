@@ -2,13 +2,13 @@ import { Users } from '@prisma/client';
 import prisma from '@config/prisma.client';
 import { UserDTO } from 'src/@types/dto';
 
-export default class User implements UserDTO {
+export default class User {
   constructor(
-    public name: string,
-    public email: string,
-    public password: string,
-    public avatar: string | null,
-    public id?: string,
+    private name: string,
+    private email: string,
+    private password: string,
+    private avatar: string | null,
+    private id?: string,
   ) {}
 
   public async save(): Promise<boolean> {
@@ -18,7 +18,10 @@ export default class User implements UserDTO {
       if (!this.id) {
         const userBD = await prisma.users.create({
           data: {
-            ...this,
+            name: this.name,
+            email: this.email,
+            password: this.password,
+            avatar: this.avatar,
           },
         });
 
@@ -26,10 +29,13 @@ export default class User implements UserDTO {
       } else {
         await prisma.users.update({
           where: {
-            ...this,
+            id: this.id,
           },
           data: {
-            ...this,
+            name: this.name,
+            email: this.email,
+            password: this.password,
+            avatar: this.avatar,
           },
         });
       }
