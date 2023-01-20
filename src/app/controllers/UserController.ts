@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
+import * as bcrypt from 'bcrypt';
+
 import UserBuilder from '@builders/UserBuilder';
 import ControllerProtocol from '@interfaces/controller.protocol';
 import User from '@entities/User';
-
-import * as bcrypt from 'bcrypt';
+import { BadRequestError } from '@erros/api-erros';
 
 export default class UserController implements ControllerProtocol {
   private userBuilder = new UserBuilder();
@@ -13,11 +14,7 @@ export default class UserController implements ControllerProtocol {
     const userExists = await User.findOne({ email });
 
     if (userExists) {
-      res.json({
-        error: 'Usuário Já Existe!',
-      });
-
-      return;
+      throw new BadRequestError('Usuário Já Existe');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -30,15 +27,13 @@ export default class UserController implements ControllerProtocol {
     const newUser = this.userBuilder.build();
     const saveUser = await newUser?.save() ?? false;
 
-    if (saveUser) {
-      res.status(201).json({
-        sucess: 'Usuário cadastrado com sucesso!',
-      });
-    } else {
-      res.json({
-        error: 'Oops, Algum erro aconteceu, tente novamente mais tarde!',
-      });
+    if (!saveUser) {
+      throw new BadRequestError('Oops, Algo de errado aconteceu, tente novamente mais tarde!');
     }
+
+    res.status(201).json({
+      sucess: 'Usuário cadastrado com sucesso!',
+    });
   }
 
   public update(req: Request, res: Response): void {
