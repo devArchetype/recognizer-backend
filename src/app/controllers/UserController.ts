@@ -17,12 +17,10 @@ export default class UserController implements ControllerProtocol {
       throw new BadRequestError('Usuário Já Existe');
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     this.userBuilder.reset();
     this.userBuilder.name = name;
     this.userBuilder.email = email;
-    this.userBuilder.password = hashedPassword;
+    this.userBuilder.password = await bcrypt.hash(password, 10);
 
     const newUser = this.userBuilder.build();
     const saveUser = await newUser?.save() ?? false;
