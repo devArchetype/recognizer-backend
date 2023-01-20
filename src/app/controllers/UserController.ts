@@ -58,7 +58,15 @@ export default class UserController implements ControllerProtocol {
     }
 
     const token = jwt.sign({ id: user.id }, jwtConfig.secret, jwtConfig.signOptions);
+    const { password: _, ...loggedUser } = user;
 
-    res.status(201).json({ token });
+    res.status(200).json({
+      user: loggedUser,
+      token,
+    });
+  }
+
+  async getProfile(req: Request, res: Response) {
+    // res.json(req.user);
   }
 }
