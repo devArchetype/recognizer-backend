@@ -34,6 +34,9 @@
       "@config/*": [
         "./src/config/*"
       ],
+      "@erros/*": [
+        "./src/errors/*"
+      ],
       "@middlewares/*": [
         "./src/middlewares/*"
       ],
