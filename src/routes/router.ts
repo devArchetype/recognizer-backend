@@ -11,5 +11,6 @@ router.post('/user/store', userController.store.bind(userController));
 router.post('/user/login', userController.login.bind(userController));
 
 router.use(authMiddleware);
+router.delete('/user/delete', userController.delete.bind(userController));
 
 export default router;

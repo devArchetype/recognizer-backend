@@ -58,4 +58,12 @@ export default class User {
       },
     });
   }
+
+  public static async destroy(user: UserDTO): Promise<Users | null> {
+    return prisma.users.delete({
+      where: {
+        ...user,
+      },
+    });
+  }
 }

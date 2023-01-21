@@ -5,8 +5,9 @@ import * as jwt from 'jsonwebtoken';
 import UserBuilder from '@builders/UserBuilder';
 import ControllerProtocol from '@interfaces/controller.protocol';
 import User from '@entities/User';
-import { BadRequestError } from '@erros/api-erros';
+import { BadRequestError, UnauthorizedError } from '@erros/api-erros';
 import jwtConfig from '@config/jwt.config';
+import { JwtPayload } from 'src/@types/jwt.payload';
 
 export default class UserController implements ControllerProtocol {
   private userBuilder = new UserBuilder();
@@ -41,7 +42,25 @@ export default class UserController implements ControllerProtocol {
   }
 
   public async delete(req: Request, res: Response): Promise<void> {
+    const { authorization } = req.headers;
+    if (!authorization) {
+      throw new UnauthorizedError('Não autorizado');
+    }
 
+    const token = authorization?.split(' ')[1] ?? '';
+    if (!token) {
+      throw new UnauthorizedError('Não autorizado');
+    }
+
+    const { id } = jwt.verify(token, jwtConfig.secret) as JwtPayload;
+    const deletedUser = await User.destroy({ id });
+    if (!deletedUser) {
+      throw new UnauthorizedError('Não autorizado');
+    }
+
+    res.status(201).json({
+      sucess: 'Usuário deletado com sucesso!',
+    });
   }
 
   public async login(req: Request, res: Response): Promise<void> {
