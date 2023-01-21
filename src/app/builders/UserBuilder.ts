@@ -19,7 +19,7 @@ export default class UserBuilder implements Builder {
 
   public set name(name: string) {
     if (validator.isEmpty(name)) {
-      throw new BadRequestError('Nome inválida');
+      throw new BadRequestError('Nome inválido');
     }
 
     this._name = name;
