@@ -13,8 +13,8 @@ export const authMiddleware = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const { authorization, hashKeepSession } = req.headers;
-  if (!authorization && !hashKeepSession) {
+  const { authorization } = req.headers;
+  if (!authorization) {
     throw new UnauthorizedError('Não autorizado');
   }
 
@@ -23,17 +23,15 @@ export const authMiddleware = async (
     throw new UnauthorizedError('Não autorizado');
   }
 
-  const { id } = jwt.verify(token, jwtConfig.secret) as JwtPayload;
+  const { id } = jwt.verify(token, jwtConfig.secret, (err) => {
+    if (err) {
+      throw new UnauthorizedError('Não autorizado');
+    }
+  }) as unknown as JwtPayload;
+
   const user = await User.findOne({ id });
   if (!user) {
     throw new UnauthorizedError('Não autorizado');
-  }
-
-  if (hashKeepSession) {
-    const verifyhash = await bcrypt.compare(String(hashKeepSession), user.email + user.password);
-    if (!verifyhash) {
-      throw new UnauthorizedError('Não autorizado');
-    }
   }
 
   const { password: _, ...loggedUser } = user;
