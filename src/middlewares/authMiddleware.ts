@@ -5,8 +5,7 @@ import User from '@entities/User';
 import { UnauthorizedError } from '@erros/api-erros';
 import { JwtPayload } from 'src/@types/jwt.payload';
 import jwtConfig from '@config/jwt.config';
-
-import * as bcrypt from 'bcrypt';
+import { decode } from 'punycode';
 
 export const authMiddleware = async (
   req: Request,
@@ -14,24 +13,28 @@ export const authMiddleware = async (
   next: NextFunction,
 ) => {
   const { authorization } = req.headers;
+  console.log(req.headers);
   if (!authorization) {
-    throw new UnauthorizedError('Não autorizado');
+    throw new UnauthorizedError('Não autorizado 1');
   }
 
   const token = authorization?.split(' ')[1] ?? '';
   if (!token) {
-    throw new UnauthorizedError('Não autorizado');
+    throw new UnauthorizedError('Não autorizado 2');
   }
 
-  const { id } = jwt.verify(token, jwtConfig.secret, (err) => {
+  const { id } = jwt.verify(token, jwtConfig.secret, (err, decoded) => {
     if (err) {
-      throw new UnauthorizedError('Não autorizado');
+      throw new UnauthorizedError('Não autorizado 3');
+    } else {
+      return decode;
     }
   }) as unknown as JwtPayload;
 
   const user = await User.findOne({ id });
+
   if (!user) {
-    throw new UnauthorizedError('Não autorizado');
+    throw new UnauthorizedError('Não autorizado 4');
   }
 
   const { password: _, ...loggedUser } = user;
