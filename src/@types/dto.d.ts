@@ -7,7 +7,7 @@ export type UserDTO = {
 };
 
 export type MemberDTO = {
-  id: string;
-  name: string;
-  externalId: string | null;
+  id?: string;
+  name?: string;
+  externalId?: string | null;
 };
