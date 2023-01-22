@@ -5,3 +5,9 @@ export type UserDTO = {
   password?: string;
   avatar?: string | null;
 };
+
+export type GroupDTO = {
+  id?: string;
+  name?: string;
+  userId?: string
+};
