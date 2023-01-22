@@ -6,13 +6,15 @@ import { UnauthorizedError } from '@erros/api-erros';
 import { JwtPayload } from 'src/@types/jwt.payload';
 import jwtConfig from '@config/jwt.config';
 
+import * as bcrypt from 'bcrypt';
+
 export const authMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  const { authorization } = req.headers;
-  if (!authorization) {
+  const { authorization, hashKeepSession } = req.headers;
+  if (!authorization && !hashKeepSession) {
     throw new UnauthorizedError('Não autorizado');
   }
 
@@ -25,6 +27,13 @@ export const authMiddleware = async (
   const user = await User.findOne({ id });
   if (!user) {
     throw new UnauthorizedError('Não autorizado');
+  }
+
+  if (hashKeepSession) {
+    const verifyhash = await bcrypt.compare(String(hashKeepSession), user.email + user.password);
+    if (!verifyhash) {
+      throw new UnauthorizedError('Não autorizado');
+    }
   }
 
   const { password: _, ...loggedUser } = user;

@@ -64,7 +64,9 @@ export default class UserController implements ControllerProtocol {
   }
 
   public async login(req: Request, res: Response): Promise<void> {
-    const { email, password } = req.body;
+    const {
+      email, password, keepSession, recaptcha,
+    } = req.body;
 
     const user = await User.findOne({ email });
     if (!user) {
@@ -79,9 +81,13 @@ export default class UserController implements ControllerProtocol {
     const token = jwt.sign({ id: user.id }, jwtConfig.secret, jwtConfig.signOptions);
     const { password: _, ...loggedUser } = user;
 
+    let hashKeepSession: string | null = null;
+    if (keepSession) hashKeepSession = await bcrypt.hash(loggedUser.email + password, 10);
+
     res.status(200).json({
       user: loggedUser,
       token,
+      hashKeepSession,
     });
   }
 }
