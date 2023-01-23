@@ -61,8 +61,21 @@ export default class GroupController implements ControllerProtocol {
       group: storedGroup
     });
   }
-  public async show(request: Request, response: Response): Promise<void> {
 
+  public async show(request: Request, response: Response): Promise<void> {
+    const { userId } = request.body;
+
+    const storedGroups = await Group.findMany({ userId });
+    if (!storedGroups) {
+      throw new BadRequestError(
+        'Oops, Algo de errado aconteceu, tente novamente mais tarde!'
+      );
+    }
+
+    response.status(201).json({
+      success: 'Grupos encontrados com sucesso!',
+      groups: storedGroups
+    });
   }
 
   public async delete(request: Request, response: Response): Promise<void> {

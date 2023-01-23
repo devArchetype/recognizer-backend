@@ -51,6 +51,14 @@ export default class Group {
     });
   }
 
+  public static async findMany(group: GroupDTO): Promise<Groups[] | null> {
+    return prisma.groups.findMany({
+      where: {
+        ...group,
+      },
+    });
+  }
+
   public static async destroy(group: GroupDTO): Promise<Groups | null> {
     return prisma.groups.delete({
       where: {
