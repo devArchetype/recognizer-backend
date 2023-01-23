@@ -42,20 +42,11 @@ export default class UserController implements ControllerProtocol {
   }
 
   public async delete(req: Request, res: Response): Promise<void> {
-    const { authorization } = req.headers;
-    if (!authorization) {
-      throw new UnauthorizedError('Não autorizado');
-    }
-
-    const token = authorization?.split(' ')[1] ?? '';
-    if (!token) {
-      throw new UnauthorizedError('Não autorizado');
-    }
-
-    const { id } = jwt.verify(token, jwtConfig.secret) as JwtPayload;
+    const { id } = req.user;
     const deletedUser = await User.destroy({ id });
+
     if (!deletedUser) {
-      throw new UnauthorizedError('Não autorizado');
+      throw new BadRequestError('Oops, Algo de errado aconteceu, tente novamente mais tarde!');
     }
 
     res.status(201).json({

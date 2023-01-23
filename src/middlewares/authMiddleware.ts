@@ -12,14 +12,13 @@ export const authMiddleware = async (
   next: NextFunction,
 ) => {
   const { authorization } = req.headers;
-  console.log(req.headers);
   if (!authorization) {
     throw new UnauthorizedError('Não autorizado');
   }
 
   const token = authorization?.split(' ')[1] ?? '';
   if (!token) {
-    throw new UnauthorizedError('Não autorizado 2');
+    throw new UnauthorizedError('Não autorizado');
   }
 
   const { id } = jwt.verify(token, jwtConfig.secret, (err, decoded) => {
