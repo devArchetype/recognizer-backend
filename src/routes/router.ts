@@ -21,6 +21,8 @@ router.delete('/user/delete', userController.delete.bind(userController));
 // Groups
 router.post('/group/store', groupController.store.bind(groupController));
 router.patch('/group/update', groupController.update.bind(groupController));
+router.get('/group/index', groupController.index.bind(groupController));
+router.get('/group/show', groupController.show.bind(groupController));
 router.delete('/group/delete', groupController.delete.bind(groupController));
 
 export default router;

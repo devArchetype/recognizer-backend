@@ -34,7 +34,7 @@ export default class GroupController implements ControllerProtocol {
     }
 
     response.status(201).json({
-      sucess: 'Grupo criado com sucesso!',
+      success: 'Grupo criado com sucesso!',
     });
   }
 
@@ -42,8 +42,27 @@ export default class GroupController implements ControllerProtocol {
     const { id, name } = request.body
 
     response.status(201).json({
-      sucess: 'Grupo atualizado com sucesso!',
+      success: 'Grupo atualizado com sucesso!',
     });
+  }
+
+  public async index(request: Request, response: Response): Promise<void> {
+    const { id } = request.body;
+
+    const storedGroup = await Group.findOne({ id });
+    if (!storedGroup) {
+      throw new BadRequestError(
+        'Oops, Algo de errado aconteceu, tente novamente mais tarde!'
+      );
+    }
+
+    response.status(201).json({
+      success: 'Grupo encontrado com sucesso!',
+      group: storedGroup
+    });
+  }
+  public async show(request: Request, response: Response): Promise<void> {
+
   }
 
   public async delete(request: Request, response: Response): Promise<void> {
@@ -66,7 +85,7 @@ export default class GroupController implements ControllerProtocol {
     }
 
     response.status(201).json({
-      sucess: 'Grupo deletado com sucesso!',
+      success: 'Grupo deletado com sucesso!',
     });
   }
 }
