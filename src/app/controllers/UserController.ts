@@ -38,7 +38,27 @@ export default class UserController implements ControllerProtocol {
   }
 
   public async update(req: Request, res: Response): Promise<void> {
+    const {
+      name, email, password, avatar,
+    } = req.body;
 
+    this.userBuilder.reset();
+    this.userBuilder.id = req.user.id;
+    this.userBuilder.name = name ?? req.user.name;
+    this.userBuilder.email = email ?? req.user.email;
+    this.userBuilder.password = password ?? req.user.password;
+    this.userBuilder.avatar = avatar ?? req.user.avatar;
+
+    const user = this.userBuilder.build();
+    const updatedUser = await user?.save() ?? false;
+
+    if (!updatedUser) {
+      throw new BadRequestError('Oops, Algo de errado aconteceu, tente novamente mais tarde!');
+    }
+
+    res.status(201).json({
+      sucess: 'Dados atualilizados!',
+    });
   }
 
   public async delete(req: Request, res: Response): Promise<void> {

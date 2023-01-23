@@ -35,8 +35,7 @@ export const authMiddleware = async (
     throw new UnauthorizedError('Não autorizado');
   }
 
-  const { password: _, ...loggedUser } = user;
-  req.user = loggedUser;
+  req.user = user;
 
   next();
 };
