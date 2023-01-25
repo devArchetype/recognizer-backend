@@ -5,9 +5,8 @@ import * as jwt from 'jsonwebtoken';
 import UserBuilder from '@builders/UserBuilder';
 import ControllerProtocol from '@interfaces/controller.protocol';
 import User from '@entities/User';
-import { BadRequestError, UnauthorizedError } from '@erros/api-erros';
+import { BadRequestError } from '@erros/api-erros';
 import jwtConfig from '@config/jwt.config';
-import { JwtPayload } from 'src/@types/jwt.payload';
 
 export default class UserController implements ControllerProtocol {
   private userBuilder = new UserBuilder();
@@ -58,6 +57,11 @@ export default class UserController implements ControllerProtocol {
 
     res.status(201).json({
       sucess: 'Dados atualilizados!',
+      user: {
+        name: this.userBuilder.name,
+        email: this.userBuilder.email,
+        avatar: this.userBuilder.avatar,
+      },
     });
   }
 
