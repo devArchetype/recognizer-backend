@@ -13,7 +13,7 @@ const groupController = new GroupController();
 
 // Users
 router.post('/user/store', userController.store.bind(userController));
-router.post('/user/login', userController.login.bind(userController));
+router.post('/user/login', recaptchaMiddleware, userController.login.bind(userController));
 
 router.use(authMiddleware);
 
