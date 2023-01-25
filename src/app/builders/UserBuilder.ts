@@ -57,6 +57,14 @@ export default class UserBuilder implements Builder {
     this._avatar = avatar;
   }
 
+  public get id(): string {
+    return this._id;
+  }
+
+  public set id(id: string) {
+    this._id = id;
+  }
+
   public reset(): void {
     this._name = '';
     this._email = '';
