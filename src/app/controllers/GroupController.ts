@@ -1,11 +1,10 @@
-import GroupBuilder from "@builders/GroupBuilder";
-import Group from "@entities/Group";
-import { BadRequestError, NotFoundError } from "@erros/api-erros";
-import ControllerProtocol from "@interfaces/controller.protocol";
-import { Prisma } from "@prisma/client";
 import { Request, Response } from 'express';
-import { strictEquals } from "src/helpers/stringHelpers";
-
+import GroupBuilder from '@builders/GroupBuilder';
+import Group from '@entities/Group';
+import { BadRequestError, NotFoundError } from '@erros/api-erros';
+import ControllerProtocol from '@interfaces/controller.protocol';
+import { Prisma } from '@prisma/client';
+import { strictEquals } from '@helpers/stringHelpers';
 
 export default class GroupController implements ControllerProtocol {
   private groupBuilder = new GroupBuilder();
@@ -19,17 +18,17 @@ export default class GroupController implements ControllerProtocol {
 
     const storedGroup = await Group.findOne({ name, userId });
     if (storedGroup) {
-      const equalNames = strictEquals(storedGroup.name, name)
+      const equalNames = strictEquals(storedGroup.name, name);
       if (equalNames) {
         throw new BadRequestError('O grupo já existe');
       }
     }
 
     const newGroup = this.groupBuilder.build();
-    const savedGroup = await newGroup?.save()
+    const savedGroup = await newGroup?.save();
     if (!savedGroup) {
       throw new BadRequestError(
-        'Oops, Algo de errado aconteceu, tente novamente mais tarde!'
+        'Oops, Algo de errado aconteceu, tente novamente mais tarde!',
       );
     }
 
@@ -39,7 +38,7 @@ export default class GroupController implements ControllerProtocol {
   }
 
   public async update(request: Request, response: Response): Promise<void> {
-    const { id, userId, name } = request.body
+    const { id, userId, name } = request.body;
 
     this.groupBuilder.reset();
     this.groupBuilder.name = name;
@@ -47,7 +46,7 @@ export default class GroupController implements ControllerProtocol {
     this.groupBuilder.id = id;
 
     const group = this.groupBuilder.build();
-    const updatedGroup = await group?.save()
+    const updatedGroup = await group?.save();
 
     if (!updatedGroup) {
       throw new BadRequestError('Oops, Algo de errado aconteceu, tente novamente mais tarde!');
@@ -64,13 +63,13 @@ export default class GroupController implements ControllerProtocol {
     const storedGroup = await Group.findOne({ id });
     if (!storedGroup) {
       throw new BadRequestError(
-        'Oops, Algo de errado aconteceu, tente novamente mais tarde!'
+        'Oops, Algo de errado aconteceu, tente novamente mais tarde!',
       );
     }
 
     response.status(201).json({
       success: 'Grupo encontrado com sucesso!',
-      group: storedGroup
+      group: storedGroup,
     });
   }
 
@@ -80,13 +79,13 @@ export default class GroupController implements ControllerProtocol {
     const storedGroups = await Group.findMany({ userId });
     if (!storedGroups) {
       throw new BadRequestError(
-        'Oops, Algo de errado aconteceu, tente novamente mais tarde!'
+        'Oops, Algo de errado aconteceu, tente novamente mais tarde!',
       );
     }
 
     response.status(201).json({
       success: 'Grupos encontrados com sucesso!',
-      groups: storedGroups
+      groups: storedGroups,
     });
   }
 
@@ -95,17 +94,16 @@ export default class GroupController implements ControllerProtocol {
 
     try {
       const deletedGroup = await Group.destroy({ id });
-
     } catch (error) {
       if (
-        error instanceof Prisma.PrismaClientKnownRequestError &&
-        error.code === 'P2025'
+        error instanceof Prisma.PrismaClientKnownRequestError
+        && error.code === 'P2025'
       ) {
         throw new NotFoundError('O grupo não existe');
-      } 
-      
+      }
+
       throw new BadRequestError(
-          'Oops, Algo de errado aconteceu, tente novamente mais tarde!'
+        'Oops, Algo de errado aconteceu, tente novamente mais tarde!',
       );
     }
 

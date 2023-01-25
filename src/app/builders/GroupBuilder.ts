@@ -52,20 +52,20 @@ export default class GroupBuilder implements Builder {
     if (!this.validate()) return null;
 
     if (this._id) {
-      return  new Group(
+      return new Group(
         this._name,
         this._userId,
         this._id,
-      )
+      );
     }
 
-    return  new Group(
+    return new Group(
       this._name,
       this._userId,
-    )
+    );
   }
 
   private validate(): boolean {
-    return !!(this.name && this.userId)
+    return !!(this.name && this.userId);
   }
 }
