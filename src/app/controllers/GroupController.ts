@@ -39,7 +39,19 @@ export default class GroupController implements ControllerProtocol {
   }
 
   public async update(request: Request, response: Response): Promise<void> {
-    const { id, name } = request.body
+    const { id, userId, name } = request.body
+
+    this.groupBuilder.reset();
+    this.groupBuilder.name = name;
+    this.groupBuilder.userId = userId;
+    this.groupBuilder.id = id;
+
+    const group = this.groupBuilder.build();
+    const updatedGroup = await group?.save()
+
+    if (!updatedGroup) {
+      throw new BadRequestError('Oops, Algo de errado aconteceu, tente novamente mais tarde!');
+    }
 
     response.status(201).json({
       success: 'Grupo atualizado com sucesso!',

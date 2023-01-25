@@ -34,9 +34,13 @@ export default class GroupBuilder implements Builder {
     this._userId = userId;
   }
 
-  // public get id(): string {
-  //   return this._id;
-  // }
+  public get id(): string {
+    return this._id;
+  }
+
+  public set id(id: string) {
+    this._id = id;
+  }
 
   public reset(): void {
     this._name = '';
@@ -64,5 +68,4 @@ export default class GroupBuilder implements Builder {
   private validate(): boolean {
     return !!(this.name && this.userId)
   }
-
 }
