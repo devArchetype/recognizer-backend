@@ -56,7 +56,7 @@ export default class UserController implements ControllerProtocol {
     }
 
     res.status(201).json({
-      sucess: 'Dados atualilizados!',
+      sucess: 'Dados atualizados!',
       user: {
         name: this.userBuilder.name,
         email: this.userBuilder.email,

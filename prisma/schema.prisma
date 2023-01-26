@@ -16,7 +16,7 @@ model Users {
   name     String
   email    String  @unique
   password String
-  avatar   String?
+  avatar   String? @db.LongText
 
   Groups Groups[]
 }
@@ -47,7 +47,7 @@ model Exams {
 model Answers {
   id              String @id @default(uuid())
   template        String
-  templatePicture String
+  templatePicture String @db.LongText
   membersId       String
   examsId         String
 
