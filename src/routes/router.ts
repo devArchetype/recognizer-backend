@@ -20,6 +20,7 @@ router.use(authMiddleware);
 // Users
 router.delete('/user/delete', userController.delete.bind(userController));
 router.put('/user/update', userController.update.bind(userController));
+router.get('/user/statistics', userController.statistics.bind(userController));
 
 // Groups
 router.post('/group/store', groupController.store.bind(groupController));

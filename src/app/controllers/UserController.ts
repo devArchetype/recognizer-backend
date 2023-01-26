@@ -7,6 +7,7 @@ import ControllerProtocol from '@interfaces/controller.protocol';
 import User from '@entities/User';
 import { BadRequestError } from '@erros/api-erros';
 import jwtConfig from '@config/jwt.config';
+import prisma from '@config/prisma.client';
 
 export default class UserController implements ControllerProtocol {
   private userBuilder = new UserBuilder();
@@ -99,6 +100,27 @@ export default class UserController implements ControllerProtocol {
     res.status(200).json({
       user: loggedUser,
       token,
+    });
+  }
+
+  public async statistics(req: Request, res: Response): Promise<void> {
+    const groupsBD = await prisma.groups.findMany({
+      where: {
+        userId: req.user.id,
+      },
+      include: {
+        GroupsHasMembers: true,
+      },
+    });
+
+    let members = 0;
+    for (const group of groupsBD) {
+      members += group.GroupsHasMembers.length;
+    }
+
+    res.status(201).json({
+      groups: groupsBD.length,
+      members,
     });
   }
 }
