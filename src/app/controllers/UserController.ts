@@ -136,7 +136,7 @@ export default class UserController implements ControllerProtocol {
   }
 
   public async verificationCode(req: Request, res: Response): Promise<void> {
-    const code = jwt.sign({ id: req.user.id }, jwtConfig.secret, { expiresIn: '10m' });
+    const code = jwt.sign({ email: req.user.email }, jwtConfig.secret, { expiresIn: '10m' });
 
     await transporter.sendMail({
       from: 'Recognizer <' + `${process.env.EMAIL}>`,
@@ -151,12 +151,34 @@ export default class UserController implements ControllerProtocol {
     });
   }
 
+  public async verificationCodeLoggedOut(req: Request, res: Response): Promise<void> {
+    const { email } = req.body;
+    const code = jwt.sign({ email }, jwtConfig.secret, { expiresIn: '10m' });
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new BadRequestError('Essa conta não existe!');
+    }
+
+    await transporter.sendMail({
+      from: 'Recognizer <' + `${process.env.EMAIL}>`,
+      to: email,
+      subject: 'Código de Verificação',
+      html: `<h1>Olá, ${user.name}!</h1> <p>Aqui está seu código de verificação: ${code}</p>`,
+      text: `Olá, ${user.name}!\nAqui está seu código de verificação: ${code}`,
+    });
+
+    res.status(201).json({
+      sucess: 'Condigó enviado!',
+    });
+  }
+
   public async recoveryPassword(req: Request, res: Response): Promise<void> {
     const {
       code, password,
     } = req.body;
 
-    const { id } = jwt.verify(code, jwtConfig.secret, (err: unknown, decoded: unknown) => {
+    const { email } = jwt.verify(code, jwtConfig.secret, (err: unknown, decoded: unknown) => {
       if (err) {
         throw new BadRequestError('Codigo de verificação inválido!');
       } else {
@@ -164,7 +186,7 @@ export default class UserController implements ControllerProtocol {
       }
     }) as unknown as JwtPayload;
 
-    if (id !== req.user.id) {
+    if (email !== req.user.email) {
       throw new BadRequestError('Codigo de verificação inválido!');
     }
 
@@ -174,6 +196,47 @@ export default class UserController implements ControllerProtocol {
     this.userBuilder.email = req.user.email;
     this.userBuilder.password = await bcrypt.hash(password, 10) ?? req.user.password;
     this.userBuilder.avatar = req.user.avatar;
+
+    const user = this.userBuilder.build();
+    const updatedUser = await user?.save() ?? false;
+
+    if (!updatedUser) {
+      throw new BadRequestError('Oops, Algo de errado aconteceu, tente novamente mais tarde!');
+    }
+
+    res.status(201).json({
+      sucess: 'Senha atualizada!',
+    });
+  }
+
+  public async recoveryPasswordLoggedOut(req: Request, res: Response): Promise<void> {
+    const {
+      code, password,
+    } = req.body;
+
+    const { email } = jwt.verify(code, jwtConfig.secret, (err: unknown, decoded: unknown) => {
+      if (err) {
+        throw new BadRequestError('Codigo de verificação inválido!');
+      } else {
+        return decoded;
+      }
+    }) as unknown as JwtPayload;
+
+    const userRecovery = await User.findOne({ email });
+    if (!userRecovery) {
+      throw new BadRequestError('Oops, Algo de errado aconteceu, tente novamente mais tarde!');
+    }
+
+    if (email !== userRecovery.email) {
+      throw new BadRequestError('Codigo de verificação inválido!');
+    }
+
+    this.userBuilder.reset();
+    this.userBuilder.id = userRecovery.id;
+    this.userBuilder.name = userRecovery.name;
+    this.userBuilder.email = userRecovery.email;
+    this.userBuilder.password = await bcrypt.hash(password, 10) ?? userRecovery.password;
+    this.userBuilder.avatar = userRecovery.avatar ?? '';
 
     const user = this.userBuilder.build();
     const updatedUser = await user?.save() ?? false;

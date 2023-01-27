@@ -12,6 +12,8 @@ const userController = new UserController();
 
 router.post('/user/store', userController.store.bind(userController));
 router.post('/user/login', recaptchaMiddleware, userController.login.bind(userController));
+router.post('/user/recovery-password', userController.verificationCodeLoggedOut.bind(userController));
+router.patch('/user/recovery-logged-out', userController.recoveryPasswordLoggedOut.bind(userController));
 
 router.use(authMiddleware);
 
