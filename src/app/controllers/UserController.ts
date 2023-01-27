@@ -115,6 +115,15 @@ export default class UserController implements ControllerProtocol {
       },
     });
 
+    if (!groupsBD || groupsBD.length <= 0) {
+      res.status(201).json({
+        groups: 0,
+        members: 0,
+      });
+
+      return;
+    }
+
     let members = 0;
     for (const group of groupsBD) {
       members += group.GroupsHasMembers.length;
