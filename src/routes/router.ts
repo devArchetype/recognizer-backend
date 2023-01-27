@@ -19,6 +19,7 @@ router.delete('/user/delete', userController.delete.bind(userController));
 router.put('/user/update', userController.update.bind(userController));
 router.get('/user/statistics', userController.statistics.bind(userController));
 router.get('/user/verification-code', userController.verificationCode.bind(userController));
+router.patch('/user/recovery', userController.recoveryPassword.bind(userController));
 
 // * Groups
 const groupController = new GroupController();

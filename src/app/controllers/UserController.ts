@@ -9,6 +9,7 @@ import { BadRequestError } from '@erros/api-erros';
 import jwtConfig from '@config/jwt.config';
 import prisma from '@config/prisma.client';
 import transporter from '@config/nodemailer.config';
+import { JwtPayload } from 'src/@types/jwt.payload';
 
 export default class UserController implements ControllerProtocol {
   private userBuilder = new UserBuilder();
@@ -126,7 +127,7 @@ export default class UserController implements ControllerProtocol {
   }
 
   public async verificationCode(req: Request, res: Response): Promise<void> {
-    const code = await bcrypt.hash(req.user.email, 10);
+    const code = jwt.sign({ id: req.user.id }, jwtConfig.secret, { expiresIn: '10m' });
 
     await transporter.sendMail({
       from: 'Recognizer <' + `${process.env.EMAIL}>`,
@@ -138,6 +139,42 @@ export default class UserController implements ControllerProtocol {
 
     res.status(201).json({
       sucess: 'Preecha o respectivo campo com o código de verificação enviado ao seu email',
+    });
+  }
+
+  public async recoveryPassword(req: Request, res: Response): Promise<void> {
+    const {
+      code, password,
+    } = req.body;
+
+    const { id } = jwt.verify(code, jwtConfig.secret, (err: unknown, decoded: unknown) => {
+      if (err) {
+        throw new BadRequestError('Codigo de verificação inválido!');
+      } else {
+        return decoded;
+      }
+    }) as unknown as JwtPayload;
+
+    if (id !== req.user.id) {
+      throw new BadRequestError('Codigo de verificação inválido!');
+    }
+
+    this.userBuilder.reset();
+    this.userBuilder.id = req.user.id;
+    this.userBuilder.name = req.user.name;
+    this.userBuilder.email = req.user.email;
+    this.userBuilder.password = await bcrypt.hash(password, 10) ?? req.user.password;
+    this.userBuilder.avatar = req.user.avatar;
+
+    const user = this.userBuilder.build();
+    const updatedUser = await user?.save() ?? false;
+
+    if (!updatedUser) {
+      throw new BadRequestError('Oops, Algo de errado aconteceu, tente novamente mais tarde!');
+    }
+
+    res.status(201).json({
+      sucess: 'Senha atualizada!',
     });
   }
 }
