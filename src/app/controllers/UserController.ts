@@ -123,4 +123,7 @@ export default class UserController implements ControllerProtocol {
       members,
     });
   }
+
+  public async verificationCode(req: Request, res: Response): Promise<void> {
+  }
 }

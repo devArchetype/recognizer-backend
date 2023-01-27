@@ -7,22 +7,22 @@ import GroupController from '@controllers/GroupController';
 
 const router = express.Router();
 
-// * user routes
+// * User
 const userController = new UserController();
-const groupController = new GroupController();
 
-// Users
 router.post('/user/store', userController.store.bind(userController));
 router.post('/user/login', recaptchaMiddleware, userController.login.bind(userController));
 
 router.use(authMiddleware);
 
-// Users
 router.delete('/user/delete', userController.delete.bind(userController));
 router.put('/user/update', userController.update.bind(userController));
 router.get('/user/statistics', userController.statistics.bind(userController));
+router.get('/user/verification-code', userController.verificationCode.bind(userController));
 
-// Groups
+// * Groups
+const groupController = new GroupController();
+
 router.post('/group/store', groupController.store.bind(groupController));
 router.patch('/group/update', groupController.update.bind(groupController));
 router.get('/group/index', groupController.index.bind(groupController));
