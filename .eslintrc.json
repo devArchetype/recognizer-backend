@@ -31,6 +31,7 @@
     "class-methods-use-this": "off",
     "@typescript-eslint/no-empty-function": "off",
     "no-await-in-loop": "off",
-    "no-restricted-syntax": "off"
+    "no-restricted-syntax": "off",
+    "no-useless-concat": "off"
   }
 }

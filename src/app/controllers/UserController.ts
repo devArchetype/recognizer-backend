@@ -8,6 +8,7 @@ import User from '@entities/User';
 import { BadRequestError } from '@erros/api-erros';
 import jwtConfig from '@config/jwt.config';
 import prisma from '@config/prisma.client';
+import transporter from '@config/nodemailer.config';
 
 export default class UserController implements ControllerProtocol {
   private userBuilder = new UserBuilder();
@@ -125,5 +126,18 @@ export default class UserController implements ControllerProtocol {
   }
 
   public async verificationCode(req: Request, res: Response): Promise<void> {
+    const code = await bcrypt.hash(req.user.email, 10);
+
+    await transporter.sendMail({
+      from: 'Recognizer <' + `${process.env.EMAIL}>`,
+      to: req.user.email,
+      subject: 'Código de Verificação',
+      html: `<h1>Olá, ${req.user.name}!</h1> <p>Aqui está seu código de verificação: ${code}</p>`,
+      text: `Olá, ${req.user.name}!\nAqui está seu código de verificação: ${code}`,
+    });
+
+    res.status(201).json({
+      sucess: 'Preecha o respectivo campo com o código de verificação enviado ao seu email',
+    });
   }
 }
