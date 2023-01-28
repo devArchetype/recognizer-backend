@@ -11,7 +11,7 @@ export default class GroupController implements ControllerProtocol {
 
   public async store(request: Request, response: Response): Promise<void> {
     const { name } = request.body;
-    const { id } = request.user
+    const { id } = request.user;
 
     this.groupBuilder.reset();
     this.groupBuilder.name = name ?? '';
@@ -40,7 +40,7 @@ export default class GroupController implements ControllerProtocol {
 
   public async update(request: Request, response: Response): Promise<void> {
     const { id, name } = request.body;
-    const userId = request.user.id
+    const userId = request.user.id;
 
     this.groupBuilder.reset();
     this.groupBuilder.name = name;
@@ -61,7 +61,7 @@ export default class GroupController implements ControllerProtocol {
 
   public async index(request: Request, response: Response): Promise<void> {
     const { id } = request.body;
-    const userId = request.user.id
+    const userId = request.user.id;
 
     const storedGroup = await Group.findOne({ id, userId });
     if (!storedGroup) {
@@ -77,12 +77,12 @@ export default class GroupController implements ControllerProtocol {
   }
 
   public async show(request: Request, response: Response): Promise<void> {
-    const { id } = request.user
+    const { id } = request.user;
 
     const storedGroups = await Group.findMany({ userId: id });
     if (!storedGroups) {
       throw new BadRequestError(
-        'Oops, Algo de errado aconteceu, tente novamente mais tarde!'
+        'Oops, Algo de errado aconteceu, tente novamente mais tarde!',
       );
     }
 
@@ -96,8 +96,7 @@ export default class GroupController implements ControllerProtocol {
     const { id } = request.body;
 
     try {
-      const deletedGroup = await Group.destroy({ id});
-
+      const deletedGroup = await Group.destroy({ id });
     } catch (error) {
       console.log(error);
       if (

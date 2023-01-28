@@ -40,7 +40,7 @@ export default class Group {
   }
 
   private validate(): boolean {
-    return !!(this.name && this.userId)
+    return !!(this.name && this.userId);
   }
 
   public static async findOne(group: GroupDTO): Promise<Groups | null> {

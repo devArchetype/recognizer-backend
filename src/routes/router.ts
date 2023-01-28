@@ -4,6 +4,7 @@ import { authMiddleware } from '@middlewares/authMiddleware';
 import { recaptchaMiddleware } from '@middlewares/recaptchaMiddleware';
 import UserController from '@controllers/UserController';
 import GroupController from '@controllers/GroupController';
+import ExamController from '@controllers/ExamController';
 import MemberController from '@controllers/MemberController';
 
 const router = express.Router();
@@ -32,6 +33,12 @@ router.patch('/group/update', groupController.update.bind(groupController));
 router.get('/group/index', groupController.index.bind(groupController));
 router.get('/group/show', groupController.show.bind(groupController));
 router.delete('/group/delete', groupController.delete.bind(groupController));
+
+// * Exams
+const examController = new ExamController();
+
+router.post('/exam/store', examController.store.bind(examController));
+router.delete('/exam/delete/', examController.store.bind(examController));
 
 // * Members
 const memberController = new MemberController();

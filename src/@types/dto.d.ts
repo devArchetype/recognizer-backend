@@ -17,3 +17,12 @@ export type GroupDTO = {
   name?: string;
   userId?: string
 };
+
+export type ExamDTO = {
+  name?: string,
+  description?: string | null,
+  examDate?: Date | null,
+  template?: string,
+  groupId?: string,
+  id?: string,
+};
