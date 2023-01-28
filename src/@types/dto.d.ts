@@ -11,3 +11,9 @@ export type MemberDTO = {
   name?: string;
   externalId?: string | null;
 };
+
+export type GroupDTO = {
+  id?: string;
+  name?: string;
+  userId?: string
+};

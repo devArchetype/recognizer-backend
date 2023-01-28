@@ -16,7 +16,7 @@ model Users {
   name     String
   email    String  @unique
   password String
-  avatar   String?
+  avatar   String? @db.LongText
 
   Groups Groups[]
 }
@@ -26,9 +26,9 @@ model Groups {
   name   String
   userId String
 
-  user    Users     @relation(fields: [userId], references: [id])
-  Exams   Exams[]
-  Members Members[]
+  user             Users              @relation(fields: [userId], references: [id])
+  Exams            Exams[]
+  GroupsHasMembers GroupsHasMembers[]
 }
 
 model Exams {
@@ -39,15 +39,15 @@ model Exams {
   template    String
   groupId     String
 
-  group   Groups    @relation(fields: [groupId], references: [id])
-  Members Members[]
-  Answers Answers[]
+  group           Groups            @relation(fields: [groupId], references: [id])
+  Answers         Answers[]
+  MembersHasExams MembersHasExams[]
 }
 
 model Answers {
   id              String @id @default(uuid())
   template        String
-  templatePicture String
+  templatePicture String @db.LongText
   membersId       String
   examsId         String
 
@@ -60,7 +60,25 @@ model Members {
   name       String
   externalId String?
 
-  Groups  Groups[]
-  Exams   Exams[]
-  Answers Answers[]
+  Answers          Answers[]
+  GroupsHasMembers GroupsHasMembers[]
+  MembersHasExams  MembersHasExams[]
+}
+
+model GroupsHasMembers {
+  id       String @id @default(uuid())
+  memberId String
+  groupId  String
+
+  Member Members @relation(fields: [memberId], references: [id])
+  Group  Groups  @relation(fields: [groupId], references: [id])
+}
+
+model MembersHasExams {
+  id       String @id @default(uuid())
+  memberId String
+  examsId  String
+
+  Member Members @relation(fields: [memberId], references: [id])
+  Exams  Exams   @relation(fields: [examsId], references: [id])
 }

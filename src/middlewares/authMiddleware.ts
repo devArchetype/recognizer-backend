@@ -21,14 +21,22 @@ export const authMiddleware = async (
     throw new UnauthorizedError('Não autorizado');
   }
 
-  const { id } = jwt.verify(token, jwtConfig.secret) as JwtPayload;
+  const { id } = jwt.verify(token, jwtConfig.secret, (err, decoded) => {
+    if (err) {
+      throw new UnauthorizedError('Não autorizado');
+    } else {
+      return decoded;
+    }
+  }) as unknown as JwtPayload;
+
   const user = await User.findOne({ id });
+
   if (!user) {
     throw new UnauthorizedError('Não autorizado');
   }
 
-  const { password: _, ...loggedUser } = user;
-  req.user = loggedUser;
+  req.user = user;
+  req.token = token;
 
   next();
 };
