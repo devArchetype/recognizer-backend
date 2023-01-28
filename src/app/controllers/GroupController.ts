@@ -85,7 +85,6 @@ export default class GroupController implements ControllerProtocol {
         'Oops, Algo de errado aconteceu, tente novamente mais tarde!',
       );
     }
-
     response.status(201).json({
       success: 'Grupos encontrados com sucesso!',
       groups: storedGroups,

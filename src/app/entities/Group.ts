@@ -56,6 +56,9 @@ export default class Group {
       where: {
         ...group,
       },
+      include: {
+        _count: true,
+      },
     });
   }
 
