@@ -38,7 +38,7 @@ router.delete('/group/delete', groupController.delete.bind(groupController));
 const examController = new ExamController();
 
 router.post('/exam/store', examController.store.bind(examController));
-router.delete('/exam/delete/', examController.store.bind(examController));
+router.delete('/exam/delete', examController.delete.bind(examController));
 
 // * Members
 const memberController = new MemberController();
