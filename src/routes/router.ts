@@ -39,6 +39,7 @@ const examController = new ExamController();
 
 router.post('/exam/store', examController.store.bind(examController));
 router.delete('/exam/delete', examController.delete.bind(examController));
+router.get('/exams/show/:groupId', examController.show.bind(examController));
 
 // * Members
 const memberController = new MemberController();

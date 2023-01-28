@@ -62,6 +62,17 @@ export default class Exam {
     });
   }
 
+  public static async findMany(exam: ExamDTO): Promise<Exams[] | null> {
+    return prisma.exams.findMany({
+      where: {
+        ...exam,
+      },
+      include: {
+        _count: true,
+      },
+    });
+  }
+
   public static async destroy(group: ExamDTO): Promise<Exams | null> {
     return prisma.exams.delete({
       where: {

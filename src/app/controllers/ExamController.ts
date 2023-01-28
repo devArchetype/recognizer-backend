@@ -42,6 +42,30 @@ export default class ExamController implements ControllerProtocol {
 
   }
 
+  public async show(req: Request, res: Response): Promise<void> {
+    const { id } = req.user;
+    const { groupId } = req.params;
+
+    const group = await Group.findOne({ userId: id, id: groupId });
+    if (!group) {
+      throw new BadRequestError(
+        'Grupo inválido!',
+      );
+    }
+
+    const storedExms = await Exam.findMany({ groupId });
+    if (!storedExms) {
+      throw new BadRequestError(
+        'Oops, Algo de errado aconteceu, tente novamente mais tarde!',
+      );
+    }
+
+    res.status(201).json({
+      success: 'Provas encontrados com sucesso!',
+      exams: storedExms,
+    });
+  }
+
   public async delete(req: Request, res: Response): Promise<void> {
     const { id } = req.body;
 
