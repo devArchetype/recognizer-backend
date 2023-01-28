@@ -33,8 +33,11 @@ router.get('/group/index', groupController.index.bind(groupController));
 router.get('/group/show', groupController.show.bind(groupController));
 router.delete('/group/delete', groupController.delete.bind(groupController));
 
+// * Members
 const memberController = new MemberController();
+
 router.post('/member/store', memberController.store.bind(memberController));
 router.delete('/member/delete/:id', memberController.delete.bind(memberController));
+router.get('/members/show/:groupId', memberController.show.bind(memberController));
 
 export default router;

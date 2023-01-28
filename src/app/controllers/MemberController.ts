@@ -1,9 +1,12 @@
-import { BadRequestError, UnauthorizedError } from '@erros/api-erros';
+import { BadRequestError } from '@erros/api-erros';
 import Member from '@entities/Member';
 import { Request, Response } from 'express';
 
 import MemberBuilder from '@builders/MemberBuilder';
 import ControllerProtocol from '@interfaces/controller.protocol';
+import Group from '@entities/Group';
+import prisma from '@config/prisma.client';
+import { Members } from '@prisma/client';
 
 export default class MemberController implements ControllerProtocol {
   private memberBuilder = new MemberBuilder();
@@ -26,14 +29,39 @@ export default class MemberController implements ControllerProtocol {
     });
   }
 
+  public async show(req: Request, res: Response): Promise<void> {
+    const groupId = req.params.groupId ?? null;
+    const group = await Group.findOne({ id: groupId, userId: req.user.id });
+    if (!group) {
+      throw new BadRequestError('Grupo inexistente!');
+    }
+
+    const groupsHasMembers = await prisma.groupsHasMembers.findMany({
+      where: {
+        groupId,
+      },
+    });
+
+    let members: Members[] | null = [];
+    if (groupsHasMembers && groupsHasMembers.length > 0) {
+      const ids = groupsHasMembers.map(({ memberId }) => memberId);
+      members = await Member.findMany(ids);
+    }
+
+    res.status(201).json({
+      sucess: `Selecione os Membros presentes no grupo ${group.name}`,
+      members: members ?? [],
+    });
+  }
+
   public async update(req: Request, res: Response): Promise<void> {
 
   }
 
   public async delete(req: Request, res: Response): Promise<void> {
     const memberId = req.params.id ?? null;
-    const member = await Member.findMany({ id: memberId });
-    if (!member || member.length <= 0) {
+    const member = await Member.findOne({ id: memberId });
+    if (!member) {
       throw new BadRequestError('Esse membro não existe!');
     }
 

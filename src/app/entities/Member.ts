@@ -45,10 +45,20 @@ export default class Member {
     return false;
   }
 
-  public static async findMany(member: MemberDTO): Promise<Members[] | null> {
-    return prisma.members.findMany({
+  public static async findOne(member: MemberDTO): Promise<Members | null> {
+    return prisma.members.findFirst({
       where: {
         ...member,
+      },
+    });
+  }
+
+  public static async findMany(ids: string[]): Promise<Members[] | null> {
+    return prisma.members.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
       },
     });
   }
