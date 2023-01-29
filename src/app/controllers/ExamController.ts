@@ -38,15 +38,15 @@ export default class ExamController implements ControllerProtocol {
       success: 'Prova criada!',
     });
   }
+
   public async members(req: Request, res: Response): Promise<void> {
     const { examsId } = req.params;
-    
+
     const members = await prisma.membersHasExams.findMany({
       where: {
         examsId,
-      }
+      },
     });
-   
 
     if (!members) {
       throw new BadRequestError(
@@ -54,13 +54,7 @@ export default class ExamController implements ControllerProtocol {
       );
     }
 
-    const membersName = await prisma.members.findMany({
-      where: {
-        id: {
-          in: members.map((member) => member.memberId),
-        },
-      },
-    });
+    const membersName = await Member.findMany(members.map((member) => member.memberId));
 
     if (!membersName) {
       throw new BadRequestError(
@@ -69,7 +63,7 @@ export default class ExamController implements ControllerProtocol {
     }
 
     res.status(201).json({
-      success: 'Alunos encontrados com sucesso!',
+      success: 'Membros encontrados com sucesso!',
       members: membersName,
     });
   }
@@ -79,12 +73,12 @@ export default class ExamController implements ControllerProtocol {
   }
 
   public async index(request: Request, response: Response): Promise<void> {
-    //Get the exam id from the request
+    // Get the exam id from the request
     const { examId } = request.params;
-    
-   //Get exam based on id
-    const exam = await Exam.findOne( examId );
-   
+
+    // Get exam based on id
+    const exam = await Exam.findOne(examId);
+
     if (!exam) {
       throw new BadRequestError(
         'Oops, Algo de errado aconteceu, tente novamente mais tarde!',
@@ -92,10 +86,11 @@ export default class ExamController implements ControllerProtocol {
     }
 
     response.status(201).json({
-      success: 'Exame encontrado com sucesso!',
-      exam: exam,
+      success: 'Prova encontrado com sucesso!',
+      exam,
     });
   }
+
   public async show(req: Request, res: Response): Promise<void> {
     const { id } = req.user;
     const { groupId } = req.params;
@@ -124,7 +119,7 @@ export default class ExamController implements ControllerProtocol {
     const { examId } = req.params;
 
     try {
-      const deletedExam = await Exam.destroy( { id: examId } );
+      const deletedExam = await Exam.destroy({ id: examId });
       res.status(201).json({
         success: 'Prova deletado com sucesso!',
       });
@@ -135,13 +130,11 @@ export default class ExamController implements ControllerProtocol {
       ) {
         throw new NotFoundError('A Prova não existe');
       }
-        
+
       res.status(500).json({
-        error: 'Código : '+examId,
-        details: error?.toString()
+        error: `Código : ${examId}`,
+        details: error?.toString(),
       } as { error: string; details: string });
     }
-
-  
   }
 }

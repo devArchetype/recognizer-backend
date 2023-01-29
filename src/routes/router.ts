@@ -50,5 +50,4 @@ router.post('/members/store', memberController.store.bind(memberController));
 router.delete('/member/delete/:id', memberController.delete.bind(memberController));
 router.get('/members/show/:groupId', memberController.show.bind(memberController));
 
-
 export default router;
