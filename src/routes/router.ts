@@ -38,8 +38,10 @@ router.delete('/group/delete/:groupId', groupController.delete.bind(groupControl
 const examController = new ExamController();
 
 router.post('/exam/store', examController.store.bind(examController));
-router.delete('/exam/delete', examController.delete.bind(examController));
+router.delete('/exam/delete/:examId', examController.delete.bind(examController));
+router.get('/exam/show/:examId', examController.index.bind(examController));
 router.get('/exams/show/:groupId', examController.show.bind(examController));
+router.get('/exam/members/:examsId', examController.members.bind(examController));
 
 // * Members
 const memberController = new MemberController();
@@ -47,5 +49,6 @@ const memberController = new MemberController();
 router.post('/members/store', memberController.store.bind(memberController));
 router.delete('/member/delete/:id', memberController.delete.bind(memberController));
 router.get('/members/show/:groupId', memberController.show.bind(memberController));
+
 
 export default router;

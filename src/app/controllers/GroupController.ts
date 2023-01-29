@@ -92,7 +92,7 @@ export default class GroupController implements ControllerProtocol {
       groups: storedGroups,
     });
   }
-
+  
   public async delete(request: Request, response: Response): Promise<void> {
     const { groupId } = request.params;
 

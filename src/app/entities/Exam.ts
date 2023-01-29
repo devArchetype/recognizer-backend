@@ -54,10 +54,11 @@ export default class Exam {
     return false;
   }
 
-  public static async findOne(exam: ExamDTO): Promise<Exams | null> {
-    return prisma.exams.findFirst({
+  //Find on but by id
+  public static async findOne(id: string): Promise<Exams | null> {
+    return prisma.exams.findUnique({
       where: {
-        ...exam,
+        id,
       },
     });
   }
@@ -73,10 +74,10 @@ export default class Exam {
     });
   }
 
-  public static async destroy(group: ExamDTO): Promise<Exams | null> {
+  public static async destroy(exam: ExamDTO): Promise<Exams | null> {
     return prisma.exams.delete({
       where: {
-        ...group,
+        ...exam,
       },
     });
   }

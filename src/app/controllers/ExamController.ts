@@ -1,6 +1,7 @@
 import prisma from '@config/prisma.client';
 import { Request, Response } from 'express';
 import Exam from '@entities/Exam';
+import Member from '@entities/Member';
 import ControllerProtocol from '@interfaces/controller.protocol';
 import ExamBuilder from '@builders/ExamBuilder';
 import { BadRequestError, NotFoundError } from '@erros/api-erros';
@@ -37,11 +38,64 @@ export default class ExamController implements ControllerProtocol {
       success: 'Prova criada!',
     });
   }
+  public async members(req: Request, res: Response): Promise<void> {
+    const { examsId } = req.params;
+    
+    const members = await prisma.membersHasExams.findMany({
+      where: {
+        examsId,
+      }
+    });
+   
+
+    if (!members) {
+      throw new BadRequestError(
+        'Oops, Algo de errado aconteceu, tente novamente mais tarde!',
+      );
+    }
+
+    const membersName = await prisma.members.findMany({
+      where: {
+        id: {
+          in: members.map((member) => member.memberId),
+        },
+      },
+    });
+
+    if (!membersName) {
+      throw new BadRequestError(
+        'Oops, Algo de errado aconteceu, tente novamente mais tarde!',
+      );
+    }
+
+    res.status(201).json({
+      success: 'Alunos encontrados com sucesso!',
+      members: membersName,
+    });
+  }
 
   public async update(req: Request, res: Response): Promise<void> {
 
   }
 
+  public async index(request: Request, response: Response): Promise<void> {
+    //Get the exam id from the request
+    const { examId } = request.params;
+    
+   //Get exam based on id
+    const exam = await Exam.findOne( examId );
+   
+    if (!exam) {
+      throw new BadRequestError(
+        'Oops, Algo de errado aconteceu, tente novamente mais tarde!',
+      );
+    }
+
+    response.status(201).json({
+      success: 'Exame encontrado com sucesso!',
+      exam: exam,
+    });
+  }
   public async show(req: Request, res: Response): Promise<void> {
     const { id } = req.user;
     const { groupId } = req.params;
@@ -67,10 +121,13 @@ export default class ExamController implements ControllerProtocol {
   }
 
   public async delete(req: Request, res: Response): Promise<void> {
-    const { id } = req.body;
+    const { examId } = req.params;
 
     try {
-      const deletedExam = await Exam.destroy({ id });
+      const deletedExam = await Exam.destroy( { id: examId } );
+      res.status(201).json({
+        success: 'Prova deletado com sucesso!',
+      });
     } catch (error) {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError
@@ -78,14 +135,13 @@ export default class ExamController implements ControllerProtocol {
       ) {
         throw new NotFoundError('A Prova não existe');
       }
-
-      throw new BadRequestError(
-        'Oops, Algo de errado aconteceu, tente novamente mais tarde!',
-      );
+        
+      res.status(500).json({
+        error: 'Código : '+examId,
+        details: error?.toString()
+      } as { error: string; details: string });
     }
 
-    res.status(201).json({
-      success: 'Prova deletado com sucesso!',
-    });
+  
   }
 }
