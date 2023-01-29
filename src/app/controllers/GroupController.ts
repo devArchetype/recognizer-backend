@@ -5,6 +5,8 @@ import { strictEquals } from '@helpers/stringHelpers';
 import ControllerProtocol from '@interfaces/controller.protocol';
 import { Prisma } from '@prisma/client';
 import { Request, Response } from 'express';
+import prisma from '@config/prisma.client';
+import Member from '@entities/Member';
 
 export default class GroupController implements ControllerProtocol {
   private groupBuilder = new GroupBuilder();
@@ -95,6 +97,21 @@ export default class GroupController implements ControllerProtocol {
     const { groupId } = request.params;
 
     try {
+      const idsMembers = await prisma.groupsHasMembers.findMany({
+        where: {
+          groupId,
+        },
+        select: {
+          memberId: true,
+        },
+      });
+
+      if (idsMembers && idsMembers.length > 0) {
+        for (const idMember of idsMembers) {
+          Member.destroy({ id: idMember.memberId });
+        }
+      }
+
       const deletedGroup = await Group.destroy({ id: groupId });
     } catch (error) {
       console.log(error);
