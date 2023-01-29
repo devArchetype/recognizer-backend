@@ -92,10 +92,10 @@ export default class GroupController implements ControllerProtocol {
   }
 
   public async delete(request: Request, response: Response): Promise<void> {
-    const { id } = request.body;
+    const { groupId } = request.params;
 
     try {
-      const deletedGroup = await Group.destroy({ id });
+      const deletedGroup = await Group.destroy({ id: groupId });
     } catch (error) {
       console.log(error);
       if (

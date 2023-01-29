@@ -26,7 +26,7 @@ model Groups {
   name   String
   userId String
 
-  user             Users              @relation(fields: [userId], references: [id])
+  user             Users              @relation(fields: [userId], references: [id], onDelete: Cascade)
   Exams            Exams[]
   GroupsHasMembers GroupsHasMembers[]
 }
@@ -39,7 +39,7 @@ model Exams {
   template    String
   groupId     String
 
-  group           Groups            @relation(fields: [groupId], references: [id])
+  group           Groups            @relation(fields: [groupId], references: [id], onDelete: Cascade)
   Answers         Answers[]
   MembersHasExams MembersHasExams[]
 }
@@ -51,8 +51,8 @@ model Answers {
   membersId       String
   examsId         String
 
-  Members Members @relation(fields: [membersId], references: [id])
-  Exams   Exams   @relation(fields: [examsId], references: [id])
+  Members Members @relation(fields: [membersId], references: [id], onDelete: Cascade)
+  Exams   Exams   @relation(fields: [examsId], references: [id], onDelete: Cascade)
 }
 
 model Members {
@@ -70,8 +70,8 @@ model GroupsHasMembers {
   memberId String
   groupId  String
 
-  Member Members @relation(fields: [memberId], references: [id])
-  Group  Groups  @relation(fields: [groupId], references: [id])
+  Member Members @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  Group  Groups  @relation(fields: [groupId], references: [id], onDelete: Cascade)
 }
 
 model MembersHasExams {
@@ -79,6 +79,6 @@ model MembersHasExams {
   memberId String
   examsId  String
 
-  Member Members @relation(fields: [memberId], references: [id])
-  Exams  Exams   @relation(fields: [examsId], references: [id])
+  Member Members @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  Exams  Exams   @relation(fields: [examsId], references: [id], onDelete: Cascade)
 }
