@@ -35,7 +35,7 @@ export default class UserController implements ControllerProtocol {
     }
 
     res.status(201).json({
-      sucess: 'Usuário cadastrado com sucesso!',
+      success: 'Usuário cadastrado com sucesso!',
     });
   }
 
@@ -59,7 +59,7 @@ export default class UserController implements ControllerProtocol {
     }
 
     res.status(201).json({
-      sucess: 'Dados atualizados!',
+      success: 'Dados atualizados!',
       user: {
         name: this.userBuilder.name,
         email: this.userBuilder.email,
@@ -77,7 +77,7 @@ export default class UserController implements ControllerProtocol {
     }
 
     res.status(201).json({
-      sucess: 'Usuário deletado com sucesso!',
+      success: 'Usuário deletado com sucesso!',
     });
   }
 
@@ -147,7 +147,7 @@ export default class UserController implements ControllerProtocol {
     });
 
     res.status(201).json({
-      sucess: 'Preecha o respectivo campo com o código de verificação enviado ao seu email',
+      success: 'Preecha o respectivo campo com o código de verificação enviado ao seu email',
     });
   }
 
@@ -169,7 +169,7 @@ export default class UserController implements ControllerProtocol {
     });
 
     res.status(201).json({
-      sucess: 'Condigó enviado!',
+      success: 'Cóndigo enviado!',
     });
   }
 
@@ -205,7 +205,7 @@ export default class UserController implements ControllerProtocol {
     }
 
     res.status(201).json({
-      sucess: 'Senha atualizada!',
+      success: 'Senha atualizada!',
     });
   }
 
@@ -246,7 +246,7 @@ export default class UserController implements ControllerProtocol {
     }
 
     res.status(201).json({
-      sucess: 'Senha atualizada!',
+      success: 'Senha atualizada!',
     });
   }
 }

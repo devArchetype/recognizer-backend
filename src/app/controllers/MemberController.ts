@@ -12,20 +12,45 @@ export default class MemberController implements ControllerProtocol {
   private memberBuilder = new MemberBuilder();
 
   public async store(req: Request, res: Response): Promise<void> {
-    const { name, externalId } = req.body;
+    const { newMembers } = req.body;
 
-    this.memberBuilder.reset();
-    this.memberBuilder.name = name ?? '';
-    this.memberBuilder.externalId = externalId ?? null;
-
-    const newMember = this.memberBuilder.build();
-    const saveMember = await newMember?.save() ?? false;
-
-    if (!saveMember) {
+    if (!newMembers || newMembers.length === 0) {
       throw new BadRequestError('Oops, Algo de errado aconteceu, tente novamente mais tarde!');
     }
+
+    for (const member of newMembers) {
+      const { name, externalId, groupId } = member;
+
+      const group = await Group.findOne({ id: groupId, userId: req.user.id });
+      if (!group) {
+        throw new BadRequestError('Grupo inexistente!');
+      }
+
+      this.memberBuilder.reset();
+      this.memberBuilder.name = name ?? '';
+      this.memberBuilder.externalId = externalId ?? null;
+
+      const newMember = this.memberBuilder.build();
+      const saveMember = await newMember?.save();
+
+      if (!saveMember) {
+        throw new BadRequestError('Oops, Algo de errado aconteceu, tente novamente mais tarde!');
+      }
+
+      await prisma.groupsHasMembers.create({
+        data: {
+          groupId: group.id,
+          memberId: saveMember ? saveMember.id : '',
+        },
+      });
+
+      if (!saveMember) {
+        throw new BadRequestError('Oops, Algo de errado aconteceu, tente novamente mais tarde!');
+      }
+    }
+
     res.status(201).json({
-      sucess: 'Membro cadastrado com sucesso!',
+      success: 'Membros cadastrados com sucesso!',
     });
   }
 
@@ -49,7 +74,7 @@ export default class MemberController implements ControllerProtocol {
     }
 
     res.status(201).json({
-      sucess: `Selecione os Membros presentes no grupo ${group.name}`,
+      success: `Selecione os Membros presentes no grupo ${group.name}`,
       members: members ?? [],
     });
   }
@@ -71,7 +96,7 @@ export default class MemberController implements ControllerProtocol {
     }
 
     res.status(201).json({
-      sucess: 'Membro deletado com sucesso!',
+      success: 'Membro deletado com sucesso!',
     });
   }
 }

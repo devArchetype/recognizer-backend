@@ -44,7 +44,7 @@ router.get('/exams/show/:groupId', examController.show.bind(examController));
 // * Members
 const memberController = new MemberController();
 
-router.post('/member/store', memberController.store.bind(memberController));
+router.post('/members/store', memberController.store.bind(memberController));
 router.delete('/member/delete/:id', memberController.delete.bind(memberController));
 router.get('/members/show/:groupId', memberController.show.bind(memberController));
 

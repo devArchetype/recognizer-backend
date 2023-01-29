@@ -34,7 +34,7 @@ export default class ExamController implements ControllerProtocol {
     }
 
     res.status(201).json({
-      sucess: 'Prova criada!',
+      success: 'Prova criada!',
     });
   }
 

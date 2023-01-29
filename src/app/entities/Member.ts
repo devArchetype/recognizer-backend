@@ -1,4 +1,4 @@
-import { Members } from '@prisma/client';
+import { Members, Users } from '@prisma/client';
 import prisma from '@config/prisma.client';
 import { MemberDTO } from 'src/@types/dto';
 
@@ -9,8 +9,8 @@ export default class Member {
     private id?: string,
   ) {}
 
-  public async save(): Promise<boolean> {
-    if (!this.validate()) return false;
+  public async save(): Promise<Members | null> {
+    if (!this.validate()) return null;
 
     try {
       if (!this.id) {
@@ -22,22 +22,21 @@ export default class Member {
         });
 
         this.id = memberBD.id;
-      } else {
-        await prisma.members.update({
-          where: {
-            id: this.id,
-          },
-          data: {
-            name: this.name,
-            externalId: this.externalId,
-          },
-        });
-      }
-    } catch (err) {
-      return false;
-    }
 
-    return true;
+        return memberBD;
+      }
+      return await prisma.members.update({
+        where: {
+          id: this.id,
+        },
+        data: {
+          name: this.name,
+          externalId: this.externalId,
+        },
+      });
+    } catch (err) {
+      return null;
+    }
   }
 
   private validate(): boolean {
@@ -59,6 +58,9 @@ export default class Member {
         id: {
           in: ids,
         },
+      },
+      include: {
+        _count: true,
       },
     });
   }

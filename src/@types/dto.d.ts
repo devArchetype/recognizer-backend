@@ -10,6 +10,7 @@ export type MemberDTO = {
   id?: string;
   name?: string;
   externalId?: string | null;
+  groupId?: string;
 };
 
 export type GroupDTO = {
