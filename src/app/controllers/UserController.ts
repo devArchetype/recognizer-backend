@@ -83,7 +83,7 @@ export default class UserController implements ControllerProtocol {
 
   public async login(req: Request, res: Response): Promise<void> {
     const {
-      email, password,
+      email, password, keepSession,
     } = req.body;
 
     const user = await User.findOne({ email });
@@ -96,7 +96,8 @@ export default class UserController implements ControllerProtocol {
       throw new BadRequestError('E-mail ou senha inválidos');
     }
 
-    const token = jwt.sign({ id: user.id }, jwtConfig.secret, jwtConfig.signOptions);
+    const expiresIn = keepSession ? { expiresIn: '7d' } : jwtConfig.signOptions;
+    const token = jwt.sign({ id: user.id }, jwtConfig.secret, expiresIn);
     const { password: _, ...loggedUser } = user;
 
     res.status(200).json({
