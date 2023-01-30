@@ -7,6 +7,8 @@ import GroupController from '@controllers/GroupController';
 import ExamController from '@controllers/ExamController';
 import MemberController from '@controllers/MemberController';
 
+import upload from '@config/multer.config';
+
 const router = express.Router();
 
 // * User
@@ -49,5 +51,14 @@ const memberController = new MemberController();
 router.post('/members/store', memberController.store.bind(memberController));
 router.delete('/member/delete/:id', memberController.delete.bind(memberController));
 router.get('/members/show/:groupId', memberController.show.bind(memberController));
+
+router.post('/answers/store/:examId', upload.array('files', 30), (req, res) => {
+  console.log(req.files);
+  console.log(req.params);
+
+  res.send({
+    success: 'Aopa',
+  });
+});
 
 export default router;
