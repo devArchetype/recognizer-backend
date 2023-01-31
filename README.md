@@ -7,20 +7,13 @@
 
 ---
 
-<div align="center">
- <a href="#about">Sobre</a> |
- <a href="#technologies">Tecnologias</a> |
- <a href="#installation">Como executar</a> |
- <a href="#developers">Desenvolvedores</a>
-</div>
-
 <h2 id="about">💡&nbsp; Sobre o projeto</h2>
 
 **Recognizer** é uma plataforma destinada a leitura e correção de gabaritos, proporcionando uma correção mais eficiente e precisa. Acesse agora a plataforma: [⤤ Ir para Recognizer](http://recognizer.vercel.app/).
 
 Este repositório contém todo o código que compõe o back-end do projeto, os demais repositórios podem ser acessados em: [⤤ Recognizer Front-End](https://github.com/devArchetype/recognizer-frontend) e [⤤ Recognizer AI](https://github.com/devArchetype/recognizer-AI).
 
-<h2 id="pattern">:notebook:&nbsp; Padrões utilizados </h2>
+<h2 id="pattern">🕮&nbsp; Padrões utilizados </h2>
 
 - Padrão DAO (Data Access Object)
 
