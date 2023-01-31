@@ -70,7 +70,7 @@ cd recognizer-backend
 # Instale as dependẽncias do projeto
 npm i
 
-# Suba os container do banco de dados
+# Suba o container do banco de dados
 docker compose up -d
 
 # Aplique as Migrações do BD
