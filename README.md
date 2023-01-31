@@ -28,7 +28,7 @@ Em resumo, DAO que provê uma interface que abstrai o acesso a dados;
 lê e grava a partir da origem de dados (banco de dados, arquivo, memória, etc.); e
 encapsula o acesso aos dados, de forma que as demais classes não precisam saber sobre isso.
 
-- Builder
+- Padrão Builder
 
 O padrão Builder faz parte dos padrões criacionais, onde o mesmo tem como fundamento a separação da construção de um objeto complexo da sua representação, de forma que o mesmo processo de construção possa criar diferentes representações, baseado em regras e parâmetros que sejam informados ao objeto responsável pela construção.
 
@@ -36,80 +36,7 @@ O padrão Builder faz parte dos padrões criacionais, onde o mesmo tem como fund
 
 <h2 id="entities">👥&nbsp; Entidades </h2>
 
-```bash
-model Users {
-  id       String  @id @default(uuid())
-  name     String
-  email    String  @unique
-  password String
-  avatar   String? @db.LongText
-
-  Groups Groups[]
-}
-
-model Groups {
-  id     String @id @default(uuid())
-  name   String
-  userId String
-
-  user             Users              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Exams            Exams[]
-  GroupsHasMembers GroupsHasMembers[]
-}
-
-model Exams {
-  id          String    @id @default(uuid())
-  name        String
-  description String?
-  examDate    DateTime?
-  template    String
-  groupId     String
-
-  group           Groups            @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  Answers         Answers[]
-  MembersHasExams MembersHasExams[]
-}
-
-model Answers {
-  id              String @id @default(uuid())
-  template        String
-  templatePicture String @db.LongText
-  membersId       String
-  examsId         String
-
-  Members Members @relation(fields: [membersId], references: [id], onDelete: Cascade)
-  Exams   Exams   @relation(fields: [examsId], references: [id], onDelete: Cascade)
-}
-
-model Members {
-  id         String  @id @default(uuid())
-  name       String
-  externalId String?
-
-  Answers          Answers[]
-  GroupsHasMembers GroupsHasMembers[]
-  MembersHasExams  MembersHasExams[]
-}
-
-model GroupsHasMembers {
-  id       String @id @default(uuid())
-  memberId String
-  groupId  String
-
-  Member Members @relation(fields: [memberId], references: [id], onDelete: Cascade)
-  Group  Groups  @relation(fields: [groupId], references: [id], onDelete: Cascade)
-}
-
-model MembersHasExams {
-  id       String @id @default(uuid())
-  memberId String
-  examsId  String
-
-  Member Members @relation(fields: [memberId], references: [id], onDelete: Cascade)
-  Exams  Exams   @relation(fields: [examsId], references: [id], onDelete: Cascade)
-}
-
-```
+<img src="./prisma/ERD.svg" />
 
 ---
 
