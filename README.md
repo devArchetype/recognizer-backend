@@ -15,8 +15,11 @@ Este repositório contém todo o código que compõe o back-end do projeto, os d
 
 <h2 id="pattern">:notebook:&nbsp; Padrões utilizados </h2>
 
--
--
+- Padrão DAO (Data Access Object)
+
+Em resumo, DAO que provê uma interface que abstrai o acesso a dados;
+lê e grava a partir da origem de dados (banco de dados, arquivo, memória, etc.); e
+encapsula o acesso aos dados, de forma que as demais classes não precisam saber sobre isso.
 
 ---
 
