@@ -1,5 +1,12 @@
 <h1 align="center"> Recognizer Backend </h1>
 
+![GitHub repo size](https://img.shields.io/github/repo-size/devArchetype/recognizer-backend?label=tamanho&style=flat-square)
+![GitHub language count](https://img.shields.io/github/languages/count/devArchetype/recognizer-backend?label=linguagens&style=flat-square)
+![Project version](https://img.shields.io/github/package-json/v/devArchetype/recognizer-backend?label=vers%C3%A3o&style=flat-square)
+[![MIT License badge](https://img.shields.io/github/license/devArchetype/recognizer-backend?color=green&label=licen%C3%A7a&style=flat-square)](LICENSE.md)
+
+---
+
 <div align="center">
  <a href="#about">Sobre</a> |
  <a href="#technologies">Tecnologias</a> |
