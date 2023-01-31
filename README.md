@@ -28,6 +28,10 @@ Em resumo, DAO que provê uma interface que abstrai o acesso a dados;
 lê e grava a partir da origem de dados (banco de dados, arquivo, memória, etc.); e
 encapsula o acesso aos dados, de forma que as demais classes não precisam saber sobre isso.
 
+- Builder
+
+O padrão Builder faz parte dos padrões criacionais, onde o mesmo tem como fundamento a separação da construção de um objeto complexo da sua representação, de forma que o mesmo processo de construção possa criar diferentes representações, baseado em regras e parâmetros que sejam informados ao objeto responsável pela construção.
+
 ---
 
 <h2 id="entities">👥&nbsp; Entidades </h2>
