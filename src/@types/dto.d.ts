@@ -26,3 +26,13 @@ export type ExamDTO = {
   groupId?: string,
   id?: string,
 };
+
+
+export type AnswerDTO = {
+  id?: string;
+  template?: string;
+  description?: string | null;
+  templatePicture?: string;
+  membersId?: string;
+  exameId?: string;
+}
