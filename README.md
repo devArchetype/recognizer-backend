@@ -35,6 +35,9 @@ O padrão Builder faz parte dos padrões criacionais, onde o mesmo tem como fund
 
 <h2 id="diagrams">📒&nbsp; Diagrama de Classes </h2>
 
+- User
+<img src="./.github/imgs/diagrama-user.png" />
+
 ---
 
 <h2 id="technologies">🛠&nbsp; Tecnologias</h2>
