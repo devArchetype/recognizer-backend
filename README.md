@@ -38,6 +38,18 @@ O padrão Builder faz parte dos padrões criacionais, onde o mesmo tem como fund
 - User
 <img src="./.github/imgs/User.svg" />
 
+- Group
+<img src="./.github/imgs/Group.svg" />
+
+- Exams
+<img src="./.github/imgs/Exam.svg" />
+
+- Member
+<img src="./.github/imgs/Member.svg" />
+
+- Answers
+<img src="./.github/imgs/Answer.svg" />
+
 ---
 
 <h2 id="technologies">🛠&nbsp; Tecnologias</h2>
