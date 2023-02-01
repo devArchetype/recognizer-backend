@@ -31,11 +31,15 @@ export default class AnswerController implements ControllerProtocol {
     const { data: { student_registration, ...template } } = await recognizerIA.post('', { image: imgCompress.toString('base64') });
 
     const member = await Member.findOne({ externalId: student_registration });
-
     if (!member) {
       throw new BadRequestError(
         'Oops, Algo de errado aconteceu, tente novamente mais tarde!',
       );
+    }
+
+    const answer = await Answer.findOne({ exameId: examId, membersId: member.id });
+    if (answer) {
+      await Answer.destroy({ id: answer.id });
     }
 
     this.answerBuilder.reset();
