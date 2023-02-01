@@ -54,19 +54,10 @@ router.delete('/member/delete/:id', memberController.delete.bind(memberControlle
 router.get('/members/show/:groupId', memberController.show.bind(memberController));
 router.get('/members/showWithAnswers/:examsId', memberController.showWithExams.bind(memberController));
 
-router.post('/answers/store/:examId', upload.array('files', 30), (req, res) => {
-  console.log(req.files);
-  console.log(req.params);
-
-  res.send({
-    success: 'Aopa',
-  });
-});
-
 // * Answers
 const answerController = new AnswerController();
 
-router.post('/answer/store', answerController.store.bind(answerController));
+router.post('/answers/store/:examId', upload.single('file'), answerController.store.bind(answerController));
 router.get('/answer/index/:answerId', answerController.index.bind(answerController));
 router.get('/answer/show', answerController.show.bind(answerController));
 
