@@ -7,12 +7,10 @@ export default class AnswerBuilder implements Builder {
   constructor(
     private _id: string = '',
     private _template: string = '',
-    private _description: string | null = '',
     private _templatePicture: string = '',
     private _membersId: string = '',
-    private _exameId: string = ''
+    private _exameId: string = '',
   ) {}
-
 
   public get template(): string {
     return this._template;
@@ -26,21 +24,7 @@ export default class AnswerBuilder implements Builder {
     this._template = template;
   }
 
- 
-  public get description(): string | any{
-    return this._description;
-  }
-
-  public set description(description: string) {
-    if (validator.isEmpty(description)) {
-      throw new BadRequestError('Nome inválido');
-    }
-
-    this._description = description;
-  }
-
-
-  public get templatePicture(): string | any{
+  public get templatePicture(): string | any {
     return this._templatePicture;
   }
 
@@ -64,7 +48,6 @@ export default class AnswerBuilder implements Builder {
     this._exameId = exameId;
   }
 
-
   public get membersId(): string {
     return this._membersId;
   }
@@ -76,7 +59,6 @@ export default class AnswerBuilder implements Builder {
 
     this._membersId = membersId;
   }
-
 
   public get id(): string {
     return this._id;
@@ -91,7 +73,6 @@ export default class AnswerBuilder implements Builder {
     this._exameId = '';
     this._template = '';
     this._templatePicture = '';
-    this._description = '';
     this._id = '';
   }
 
@@ -100,19 +81,19 @@ export default class AnswerBuilder implements Builder {
 
     if (this._id) {
       return new Answer(
-      this._membersId,
-      this._exameId,
-      this._template,
-      this._templatePicture,
-      this._id,
+        this._template,
+        this._templatePicture,
+        this._membersId,
+        this._exameId,
+        this._id,
       );
     }
 
     return new Answer(
-      this._membersId,
-      this._exameId,
       this._template,
       this._templatePicture,
+      this._membersId,
+      this._exameId,
     );
   }
 

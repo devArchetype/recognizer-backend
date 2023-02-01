@@ -10,7 +10,9 @@ export default class AnswerController implements ControllerProtocol {
   private answerBuilder = new AnswerBuilder();
 
   public async store(request: Request, response: Response): Promise<void> {
-    const { template, templatePicture, description, membersId, exameId } = request.body;
+    const {
+      template, templatePicture, membersId, exameId,
+    } = request.body;
     const { id } = request.user;
 
     this.answerBuilder.reset();
@@ -18,15 +20,13 @@ export default class AnswerController implements ControllerProtocol {
     this.answerBuilder.templatePicture = templatePicture ?? '';
     this.answerBuilder.membersId = membersId ?? '';
     this.answerBuilder.exameId = exameId ?? '';
-    this.answerBuilder.description = description ?? '';
 
-
-
-    const storedAnswer = await Answer.findOne({ template: template,
-                                                templatePicture: templatePicture,
-                                                description: description,
-                                                membersId: membersId,
-                                                exameId: exameId});
+    const storedAnswer = await Answer.findOne({
+      template,
+      templatePicture,
+      membersId,
+      exameId,
+    });
     if (storedAnswer) {
       const equalNames = strictEquals(storedAnswer.template, template);
       if (equalNames) {
@@ -48,44 +48,43 @@ export default class AnswerController implements ControllerProtocol {
   }
 
   public async update(request: Request, response: Response): Promise<void> {
-    const { id, template, templatePicture, membersId, exameId, description} = request.body;
-    const userId = request.user.id;
+    const {
+      id, template, templatePicture, membersId, exameId,
+    } = request.body;
 
     this.answerBuilder.reset();
     this.answerBuilder.template = template;
     this.answerBuilder.templatePicture = templatePicture;
     this.answerBuilder.membersId = membersId;
     this.answerBuilder.exameId = exameId;
-    this.answerBuilder.description = description;
     this.answerBuilder.id = id;
 
-    
     const answer = this.answerBuilder.build();
     const updatedAnswers = await answer?.save();
-
 
     if (!updatedAnswers) {
       throw new BadRequestError('Oops, Algo de errado aconteceu, tente novamente mais tarde!');
     }
-
 
     response.status(201).json({
       success: 'Grupo atualizado com sucesso!',
     });
   }
 
-
   public async index(request: Request, response: Response): Promise<void> {
-    const { id, template, templatePicture, membersId, exameId, description } = request.body;
+    const {
+      id, template, templatePicture, membersId, exameId,
+    } = request.body;
     const userId = request.user.id;
 
-    const storedAnswer = await Answer.findOne({ id, template, templatePicture, membersId, exameId, description});
+    const storedAnswer = await Answer.findOne({
+      id, template, templatePicture, membersId, exameId,
+    });
     if (!storedAnswer) {
       throw new BadRequestError(
         'Oops, Algo de errado aconteceu, tente novamente mais tarde!',
       );
     }
-
 
     response.status(201).json({
       success: 'Grupo encontrado com sucesso!',
@@ -93,22 +92,19 @@ export default class AnswerController implements ControllerProtocol {
     });
   }
 
-  
   public async show(request: Request, response: Response): Promise<void> {
     const { id } = request.user;
 
-    const storedAnswers = await Answer.findMany({ id: id });
+    const storedAnswers = await Answer.findMany({ id });
     if (!storedAnswers) {
-      throw new BadRequestError('Oops, Algo de errado aconteceu, tente novamente mais tarde!',);
+      throw new BadRequestError('Oops, Algo de errado aconteceu, tente novamente mais tarde!');
     }
 
     response.status(201).json({
       success: 'Answers encontradas com sucesso!',
       answers: storedAnswers,
     });
-
   }
-
 
   public async delete(request: Request, response: Response): Promise<void> {
     const { id } = request.body;

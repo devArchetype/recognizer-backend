@@ -8,7 +8,6 @@ import ExamController from '@controllers/ExamController';
 import MemberController from '@controllers/MemberController';
 import AnswerController from '@controllers/AnswerController';
 
-
 const router = express.Router();
 
 // * User
@@ -57,6 +56,5 @@ router.patch('/answer/update', answerController.update.bind(answerController));
 router.get('/answer/index', answerController.index.bind(answerController));
 router.get('/answer/show', answerController.show.bind(answerController));
 router.delete('/answer/delete', answerController.delete.bind(answerController));
-
 
 export default router;

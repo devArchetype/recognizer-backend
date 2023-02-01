@@ -4,14 +4,13 @@ import { AnswerDTO } from 'src/@types/dto';
 
 export default class Answer {
   constructor(
-    private id: string,
     private template: string,
-    private description?: string | null,
-    private templatePicture?: string,
-    private membersId?: string,
-    private exameId?: string
+    private templatePicture: string,
+    private membersId: string,
+    private exameId: string,
+    private id?: string,
   ) {}
- 
+
   public async save(): Promise<boolean> {
     if (!this.validate()) return false;
 
@@ -20,26 +19,23 @@ export default class Answer {
         const storedAnswers = await prisma.answers.create({
           data: {
             template: this.template,
-            description: this.description,
             templatePicture: this.templatePicture,
             membersId: this.membersId,
-            exameId: this.exameId
-
+            examsId: this.exameId,
           },
         });
 
         this.id = storedAnswers.id;
       } else {
-        await prisma.groups.update({
+        await prisma.answers.update({
           where: {
             id: this.id,
           },
           data: {
             template: this.template,
-            description: this.description,
             templatePicture: this.templatePicture,
             membersId: this.membersId,
-            exameId: this.exameId
+            examsId: this.exameId,
           },
         });
       }
