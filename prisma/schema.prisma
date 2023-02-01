@@ -36,7 +36,7 @@ model Exams {
   name        String
   description String?
   examDate    DateTime?
-  template    String
+  template    String    @db.LongText
   groupId     String
 
   group           Groups            @relation(fields: [groupId], references: [id], onDelete: Cascade)
@@ -46,7 +46,7 @@ model Exams {
 
 model Answers {
   id              String @id @default(uuid())
-  template        String
+  template        String @db.LongText
   templatePicture String @db.LongText
   membersId       String
   examsId         String

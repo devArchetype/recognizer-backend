@@ -55,6 +55,10 @@ export default class Answer {
       where: {
         ...answer,
       },
+      include: {
+        Exams: true,
+        Members: true,
+      },
     });
   }
 
