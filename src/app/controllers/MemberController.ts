@@ -7,6 +7,10 @@ import ControllerProtocol from '@interfaces/controller.protocol';
 import Group from '@entities/Group';
 import prisma from '@config/prisma.client';
 import { Members } from '@prisma/client';
+import Exam from '@entities/Exam';
+import Answer from '@entities/Answer';
+import { ParamsDictionary } from 'express-serve-static-core';
+import { ParsedQs } from 'qs';
 
 export default class MemberController implements ControllerProtocol {
   private memberBuilder = new MemberBuilder();
@@ -75,6 +79,31 @@ export default class MemberController implements ControllerProtocol {
 
     res.status(201).json({
       success: `Selecione os Membros presentes no grupo ${group.name}`,
+      members: members ?? [],
+    });
+  }
+
+  public async showWithExams(req: Request, res: Response): Promise<void> {
+    const examId = req.params.examsId ?? null;
+    const exam = await Exam.findOne({ id: examId });
+    if (!exam) {
+      throw new BadRequestError('Prova inexistente!');
+    }
+
+    const examsHasMembers = await prisma.membersHasExams.findMany({
+      where: {
+        examsId: examId,
+      },
+    });
+
+    let members: Members[] | null = [];
+    if (examsHasMembers && examsHasMembers.length > 0) {
+      const ids = examsHasMembers.map(({ memberId }) => memberId);
+      members = await Member.findMany(ids) ?? [];
+    }
+
+    res.status(201).json({
+      success: 'Sucessso',
       members: members ?? [],
     });
   }

@@ -77,7 +77,7 @@ export default class ExamController implements ControllerProtocol {
     const { examId } = request.params;
 
     // Get exam based on id
-    const exam = await Exam.findOne(examId);
+    const exam = await Exam.findOne({ id: examId });
 
     if (!exam) {
       throw new BadRequestError(

@@ -52,6 +52,7 @@ const memberController = new MemberController();
 router.post('/members/store', memberController.store.bind(memberController));
 router.delete('/member/delete/:id', memberController.delete.bind(memberController));
 router.get('/members/show/:groupId', memberController.show.bind(memberController));
+router.get('/members/showWithAnswers/:examsId', memberController.showWithExams.bind(memberController));
 
 router.post('/answers/store/:examId', upload.array('files', 30), (req, res) => {
   console.log(req.files);

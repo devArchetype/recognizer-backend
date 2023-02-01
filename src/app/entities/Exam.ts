@@ -54,11 +54,11 @@ export default class Exam {
     return false;
   }
 
-  //Find on but by id
-  public static async findOne(id: string): Promise<Exams | null> {
+  // Find on but by id
+  public static async findOne(exam: ExamDTO): Promise<Exams | null> {
     return prisma.exams.findUnique({
       where: {
-        id,
+        ...exam,
       },
     });
   }

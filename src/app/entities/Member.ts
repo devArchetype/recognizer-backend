@@ -61,6 +61,7 @@ export default class Member {
       },
       include: {
         _count: true,
+        Answers: true,
       },
     });
   }
