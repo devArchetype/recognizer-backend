@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node dist/server.js",
     "dev": "nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register src/server.ts' -e ts",
+    "dev-windows": "nodemon --watch 'src\\' --exec 'ts-node -r tsconfig-paths\\register src\\server.ts' -e ts",
     "build": "tsc && tsc-alias",
     "studio": "npx prisma studio"
   },

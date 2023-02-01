@@ -6,6 +6,7 @@ import UserController from '@controllers/UserController';
 import GroupController from '@controllers/GroupController';
 import ExamController from '@controllers/ExamController';
 import MemberController from '@controllers/MemberController';
+import AnswerController from '@controllers/AnswerController';
 
 import upload from '@config/multer.config';
 
@@ -60,5 +61,14 @@ router.post('/answers/store/:examId', upload.array('files', 30), (req, res) => {
     success: 'Aopa',
   });
 });
+
+// * Answers
+const answerController = new AnswerController();
+
+router.post('/answer/store', answerController.store.bind(answerController));
+router.patch('/answer/update', answerController.update.bind(answerController));
+router.get('/answer/index', answerController.index.bind(answerController));
+router.get('/answer/show', answerController.show.bind(answerController));
+router.delete('/answer/delete', answerController.delete.bind(answerController));
 
 export default router;
