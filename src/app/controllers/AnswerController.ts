@@ -15,7 +15,6 @@ export default class AnswerController implements ControllerProtocol {
   public async store(request: Request, response: Response): Promise<void> {
     const { examId } = request.params;
     const { file } = request;
-    console.log(file);
 
     if (!file) {
       throw new BadRequestError(
@@ -23,20 +22,12 @@ export default class AnswerController implements ControllerProtocol {
       );
     }
 
-    const imgCompress = await sharp({
-      create: {
-        width: 48,
-        height: 48,
-        channels: 4,
-        background: {
-          r: 255, g: 0, b: 0, alpha: 0.5,
-        },
-      },
-    })
-      .jpeg()
+    const imgCompress = await sharp(file.buffer)
+      .jpeg({
+        quality: 50,
+      })
       .toBuffer();
 
-    console.log(imgCompress.toString('base64'));
     const { data: { student_registration, ...template } } = await recognizerIA.post('', { image: imgCompress.toString('base64') });
 
     const member = await Member.findOne({ externalId: student_registration });
