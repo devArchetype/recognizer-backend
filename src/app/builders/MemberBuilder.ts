@@ -1,8 +1,7 @@
-import Member from '@entities/Member';
-import { BadRequestError } from '@erros/api-erros';
-import Builder from '@interfaces/builder.protocol';
-
 import validator from 'validator';
+import Member from '../entities/Member';
+import { BadRequestError } from '../../errors/api-erros';
+import Builder from '../interfaces/builder.protocol';
 
 export default class MemberBuilder implements Builder {
   constructor(

@@ -1,8 +1,7 @@
-import User from '@entities/User';
-import { BadRequestError } from '@erros/api-erros';
-import Builder from '@interfaces/builder.protocol';
-
 import validator from 'validator';
+import User from '../entities/User';
+import { BadRequestError } from '../../errors/api-erros';
+import Builder from '../interfaces/builder.protocol';
 
 export default class UserBuilder implements Builder {
   constructor(

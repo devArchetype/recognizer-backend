@@ -33,5 +33,5 @@ export type AnswerDTO = {
   template?: string;
   templatePicture?: string;
   membersId?: string;
-  exameId?: string;
+  examsId?: string;
 };

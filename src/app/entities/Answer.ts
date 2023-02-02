@@ -7,7 +7,7 @@ export default class Answer {
     private template: string,
     private templatePicture: string,
     private membersId: string,
-    private exameId: string,
+    private examsId: string,
     private id?: string,
   ) {}
 
@@ -21,10 +21,9 @@ export default class Answer {
             template: this.template,
             templatePicture: this.templatePicture,
             membersId: this.membersId,
-            examsId: this.exameId,
+            examsId: this.examsId,
           },
         });
-
         this.id = storedAnswers.id;
       } else {
         await prisma.answers.update({
@@ -35,11 +34,12 @@ export default class Answer {
             template: this.template,
             templatePicture: this.templatePicture,
             membersId: this.membersId,
-            examsId: this.exameId,
+            examsId: this.examsId,
           },
         });
       }
     } catch (err) {
+      console.log(err);
       return false;
     }
 
@@ -47,7 +47,8 @@ export default class Answer {
   }
 
   private validate(): boolean {
-    return !!(this.id && this.template && this.templatePicture);
+    if (this.template && this.templatePicture) return true;
+    return false;
   }
 
   public static async findOne(answer: AnswerDTO): Promise<Answers | null> {

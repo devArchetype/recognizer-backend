@@ -1,7 +1,7 @@
-import Answer from '@entities/Answer';
-import { BadRequestError } from '@erros/api-erros';
-import Builder from '@interfaces/builder.protocol';
 import validator from 'validator';
+import { BadRequestError } from '../../errors/api-erros';
+import Builder from '../interfaces/builder.protocol';
+import Answer from '../entities/Answer';
 
 export default class AnswerBuilder implements Builder {
   constructor(
@@ -17,22 +17,14 @@ export default class AnswerBuilder implements Builder {
   }
 
   public set template(template: string) {
-    if (validator.isEmpty(template)) {
-      throw new BadRequestError('Nome inválido');
-    }
-
     this._template = template;
   }
 
-  public get templatePicture(): string | any {
+  public get templatePicture(): string {
     return this._templatePicture;
   }
 
   public set templatePicture(templatePicture: string) {
-    if (validator.isEmpty(templatePicture)) {
-      throw new BadRequestError('Nome inválido');
-    }
-
     this._templatePicture = templatePicture;
   }
 
@@ -41,10 +33,6 @@ export default class AnswerBuilder implements Builder {
   }
 
   public set exameId(exameId: string) {
-    if (validator.isEmpty(exameId)) {
-      throw new BadRequestError('Nome inválido');
-    }
-
     this._exameId = exameId;
   }
 
@@ -53,10 +41,6 @@ export default class AnswerBuilder implements Builder {
   }
 
   public set membersId(membersId: string) {
-    if (validator.isEmpty(membersId)) {
-      throw new BadRequestError('Nome inválido');
-    }
-
     this._membersId = membersId;
   }
 

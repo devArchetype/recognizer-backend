@@ -18,7 +18,7 @@ export default class AnswerController implements ControllerProtocol {
 
     if (!file) {
       throw new BadRequestError(
-        'Oops, Algo de errado aconteceu, tente novamente mais tarde!',
+        'Oops, Algo de errado aconteceu, tente novamente mais tarde!1',
       );
     }
 
@@ -28,23 +28,23 @@ export default class AnswerController implements ControllerProtocol {
       })
       .toBuffer();
 
-    const { data: { student_registration, ...template } } = await recognizerIA.post('', { image: imgCompress.toString('base64') });
+    const { data: { student_registration, ...template } } = await recognizerIA.post('/recognizer', { image: imgCompress.toString('base64') });
 
     const member = await Member.findOne({ externalId: student_registration });
     if (!member) {
       throw new BadRequestError(
-        'Oops, Algo de errado aconteceu, tente novamente mais tarde!',
+        'Oops, Algo de errado aconteceu, tente novamente mais tarde!2',
       );
     }
 
-    const answer = await Answer.findOne({ exameId: examId, membersId: member.id });
+    const answer = await Answer.findOne({ examsId: examId, membersId: member.id });
     if (answer) {
       await Answer.destroy({ id: answer.id });
     }
 
     this.answerBuilder.reset();
-    this.answerBuilder.template = template ?? '';
-    this.answerBuilder.templatePicture = imgCompress.toString('base64') ?? '';
+    this.answerBuilder.template = JSON.stringify(template) ?? '';
+    this.answerBuilder.templatePicture = String(imgCompress.toString('base64')) ?? '';
     this.answerBuilder.membersId = member.id ?? '';
     this.answerBuilder.exameId = examId ?? '';
 
@@ -53,7 +53,7 @@ export default class AnswerController implements ControllerProtocol {
 
     if (!savedAnswer) {
       throw new BadRequestError(
-        'Oops, Algo de errado aconteceu, tente novamente mais tarde!',
+        'Oops, Algo de errado aconteceu, tente novamente mais tarde!3',
       );
     }
 
@@ -90,7 +90,7 @@ export default class AnswerController implements ControllerProtocol {
 
     const storedAnswers = await Answer.findMany({ id });
     if (!storedAnswers) {
-      throw new BadRequestError('Oops, Algo de errado aconteceu, tente novamente mais tarde!');
+      throw new BadRequestError('Oops, Algo de errado aconteceu, tente novamente mais tarde!2');
     }
 
     response.status(201).json({

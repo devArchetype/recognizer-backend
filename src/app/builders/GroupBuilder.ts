@@ -1,7 +1,7 @@
-import Group from '@entities/Group';
-import { BadRequestError } from '@erros/api-erros';
-import Builder from '@interfaces/builder.protocol';
 import validator from 'validator';
+import Builder from '../interfaces/builder.protocol';
+import Group from '../entities/Group';
+import { BadRequestError } from '../../errors/api-erros';
 
 export default class GroupBuilder implements Builder {
   constructor(

@@ -1,7 +1,7 @@
-import Builder from '@interfaces/builder.protocol';
-import Exams from '@entities/Exam';
 import validator from 'validator';
-import { BadRequestError } from '@erros/api-erros';
+import { BadRequestError } from '../../errors/api-erros';
+import Builder from '../interfaces/builder.protocol';
+import Exams from '../entities/Exam';
 
 export default class ExamsBuilder implements Builder {
   constructor(
