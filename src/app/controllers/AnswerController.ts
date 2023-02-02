@@ -3,7 +3,6 @@ import { recognizerIA } from '@config/recognizer.ia.config';
 import Answer from '@entities/Answer';
 import Member from '@entities/Member';
 import { BadRequestError, NotFoundError } from '@erros/api-erros';
-import { strictEquals } from '@helpers/stringHelpers';
 import ControllerProtocol from '@interfaces/controller.protocol';
 import { Request, Response } from 'express';
 import sharp = require('sharp');
@@ -39,6 +38,8 @@ export default class AnswerController implements ControllerProtocol {
 
     const answer = await Answer.findOne({ examsId: examId, membersId: member.id });
     if (answer) {
+      const memberHasExam = await prisma.membersHasExams.findFirst({ where: { memberId: member.id, examsId: examId } });
+      if (memberHasExam) await prisma.membersHasExams.delete({ where: { id: memberHasExam.id } });
       await Answer.destroy({ id: answer.id });
     }
 
